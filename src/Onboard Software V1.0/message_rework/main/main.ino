@@ -1,26 +1,30 @@
 #include "Message.h"
+#include "HC05.h"
+#include "SoftwareSerial.h"
+
+HC05 *hc05;
+SoftwareSerial *myPort = new SoftwareSerial(10,11);
+
+msg::message_t msg_;
 
 void setup(){
   Serial.begin(9600);
+  myPort->begin(9600);
 
   Message msgr;
   msg::aircraft_message_t air = {0,16,0,0,0,0,0,0,0,0,0,0,0,0};
-  msg::message_t msg = msgr.buildMessage(config::thisSystem, air);
+  msg_ = msgr.buildMessage(config::thisSystem, air);
+  hc05 = new HC05(myPort);
 
-  int32_t x = 0;
-  memcpy(&x, msg.packet.buf+4,sizeof(4));
-  Serial.println(x);
 }
 
 void loop(){
+  char *test = "test";
 
-}
-
-// Used for debugging by allowing us to print a hex string based on an input char* buffer
-void printHex(char *buf, int len) 
-{
-  for (int i = 0; i < len; i++) {
-  Serial.println(buf[i] & 0xFF, HEX);
-    if (i == (len) - 1) { Serial.println(""); }
-  }
+  int32_t lon = 0;
+  memcpy(&lon, msg_.packet.buf+4, 4);
+  Serial.println(lon);
+  
+  hc05->performByteWrite(lon);
+  delay(1000);
 }
