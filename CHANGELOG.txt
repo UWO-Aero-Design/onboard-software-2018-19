@@ -1,0 +1,4 @@
+## 0.0.1 - 2018-09-24
+### Added
+- Added Initial Repo and CHANGELOG FILE
+- Initial README file added
