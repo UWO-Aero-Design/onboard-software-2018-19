@@ -1,8 +1,8 @@
 #include "Config.h"
-#include "systemControl.h"
+#include "SystemControl.h"
 
 // System control object
-systemControl systemCtl;
+SystemControl systemCtl;
 
 void setup(){
 	modeSelect();

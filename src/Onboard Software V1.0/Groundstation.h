@@ -1,18 +1,19 @@
 #ifndef GROUNDSTATION_H
 #define GROUNDSTATION_H
 
-#include "systemControl.h"
+#include "SystemControl.h"
 #include "Config.h"
-#include "Communication.h"
+#include "Radio.h"
 #include "Sensors.h"
-#include "motorControl.h"
-#include "controlAlgorithms.h"
+#include "Motors.h"
+#include "SystemAlgorithms.h"
 
-class Groundstation : public systemControl{
+class Groundstation : public SystemControl{
   private:
 
   public:
   	Groundstation();
+  	void init();
     void update();
     
 };
