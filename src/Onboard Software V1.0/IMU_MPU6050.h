@@ -10,16 +10,12 @@
 class IMU_MPU6050 {
   public: 
     IMU_MPU6050();
-    void setupInterruptHandler(uint8_t intPin, void (*interruptAction)(void), int value);
-    void dmpDataReady(void);
-    uint8_t getYaw();
-    uint8_t getPitch();
-    uint8_t getRoll();
-    void init();
+    float getYaw();
+    float getPitch();
+    float getRoll();
+    void init(int16_t xa, int16_t ya, int16_t za, int16_t xg, int16_t yg, int16_t zg);
     void update();
 
-
-  private:
 };
 
 #endif
