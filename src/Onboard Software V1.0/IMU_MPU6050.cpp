@@ -8,12 +8,9 @@
     #include "Wire.h"
 #endif
 
-MPU6050 mpu6050;
-
-//#define OUTPUT_READABLE_YAWPITCHROLL
+MPU6050 mpu;
 
 
-#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
 bool blinkState = false;
 
 // MPU control/status vars
@@ -64,39 +61,39 @@ void IMU_MPU6050::init(int16_t xa, int16_t ya, int16_t za, int16_t xg, int16_t y
 
     // initialize device
     Serial.println(F("Initializing I2C devices..."));
-    mpu6050.initialize();
+    mpu.initialize();
 
     // verify connection
     Serial.println(F("Testing device connections..."));
-    Serial.println(mpu6050.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
+    Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
 
     // load and configure the DMP
     Serial.println(F("Initializing DMP..."));
-    devStatus = mpu6050.dmpInitialize();
+    devStatus = mpu.dmpInitialize();
 
     // supply your own gyro offsets here, scaled for min sensitivity
-    mpu6050.setXGyroOffset(xg);
-    mpu6050.setYGyroOffset(yg);
-    mpu6050.setZGyroOffset(zg);
-    mpu6050.setXAccelOffset(xa);
-    mpu6050.setYAccelOffset(ya);
-    mpu6050.setZAccelOffset(za); // 1688 factory default for my test chip
+    mpu.setXGyroOffset(xg);
+    mpu.setYGyroOffset(yg);
+    mpu.setZGyroOffset(zg);
+    mpu.setXAccelOffset(xa);
+    mpu.setYAccelOffset(ya);
+    mpu.setZAccelOffset(za); // 1688 factory default for my test chip
 
     // make sure it worked (returns 0 if so)
     if (devStatus == 0) {
         // turn on the DMP, now that it's ready
         Serial.println(F("Enabling DMP..."));
-        mpu6050.setDMPEnabled(true);
+        mpu.setDMPEnabled(true);
 
         // enable Arduino interrupt detection
-        mpuIntStatus = mpu6050.getIntStatus();
+        mpuIntStatus = mpu.getIntStatus();
 
         // set our DMP Ready flag so the main loop() function knows it's okay to use it
         Serial.println(F("DMP ready."));
         dmpReady = true;
 
         // get expected DMP packet size for later comparison
-        packetSize = mpu6050.dmpGetFIFOPacketSize();
+        packetSize = mpu.dmpGetFIFOPacketSize();
     } else {
         // ERROR!
         // 1 = initial memory load failed
@@ -106,33 +103,30 @@ void IMU_MPU6050::init(int16_t xa, int16_t ya, int16_t za, int16_t xg, int16_t y
         Serial.print(devStatus);
         Serial.println(F(")"));
     }
-
-    // configure LED for output
-    pinMode(LED_PIN, OUTPUT);
 }
 
 void IMU_MPU6050::update() {
     // if programming failed, don't try to do anything
     if (!dmpReady) return;
 
-    mpuIntStatus = mpu6050.getIntStatus();
+    mpuIntStatus = mpu.getIntStatus();
 
     // get current FIFO count
-    fifoCount = mpu6050.getFIFOCount();
+    fifoCount = mpu.getFIFOCount();
 
     // check for overflow (this should never happen unless our code is too inefficient)
     if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
         // reset so we can continue cleanly
-        mpu6050.resetFIFO();
+        mpu.resetFIFO();
         Serial.println(F("FIFO overflow!"));
 
     // otherwise, check for DMP data ready interrupt (this should happen frequently)
     } else {        // Commented out by 109jb -->  if (mpuIntStatus & 0x02) {
         // wait for correct available data length, should be a VERY short wait
-        while (fifoCount < packetSize) fifoCount = mpu6050.getFIFOCount();
+        while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
 
         // read a packet from FIFO
-        mpu6050.getFIFOBytes(fifoBuffer, packetSize);
+        mpu.getFIFOBytes(fifoBuffer, packetSize);
 
         // track FIFO count here in case there is > 1 packet available
         // (this lets us immediately read more without waiting for an interrupt)
@@ -140,14 +134,17 @@ void IMU_MPU6050::update() {
 
 
             // display Euler angles in degrees
-            mpu6050.dmpGetQuaternion(&q, fifoBuffer);
-            mpu6050.dmpGetGravity(&gravity, &q);
-            mpu6050.dmpGetYawPitchRoll(ypr, &q, &gravity);
-
-
-
-        // blink LED to indicate activity
-        blinkState = !blinkState;
-        digitalWrite(LED_PIN, blinkState);
+            mpu.dmpGetQuaternion(&q, fifoBuffer);
+            mpu.dmpGetGravity(&gravity, &q);
+            mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
     }
 }
+
+void IMU_MPU6050::printYPR() {
+    Serial.print("ypr\t");
+    Serial.print(ypr[0] * 180/M_PI);
+    Serial.print("\t");
+    Serial.print(ypr[1] * 180/M_PI);
+    Serial.print("\t");
+    Serial.println(ypr[2] * 180/M_PI);
+  }

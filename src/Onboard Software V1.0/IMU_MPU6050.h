@@ -15,6 +15,8 @@ class IMU_MPU6050 {
     float getRoll();
     void init(int16_t xa, int16_t ya, int16_t za, int16_t xg, int16_t yg, int16_t zg);
     void update();
+    void printYPR();
+
 
 };
 
