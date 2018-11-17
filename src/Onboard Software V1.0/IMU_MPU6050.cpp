@@ -29,10 +29,10 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 // offsets
 
 
-//CLASS::CONSTRUCTOR
-IMU_MPU6050::IMU_MPU6050() {
-  // Constructor
-}
+IMU_MPU6050::IMU_MPU6050() { }
+
+
+IMU_MPU6050::~IMU_MPU6050() { }
 
 float IMU_MPU6050::getYaw() {
     return ypr[0] * 180/M_PI;

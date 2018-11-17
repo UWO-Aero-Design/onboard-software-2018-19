@@ -1,5 +1,4 @@
-#ifndef IMU_MPU6050_h
-#define IMU_MPU6050_h
+#include "IMU.h"
 
 #if(ARDUINO >= 100)
   #include "Arduino.h"
@@ -7,9 +6,10 @@
   #include "WProgram.h"
 #endif
 
-class IMU_MPU6050 {
+class IMU_MPU6050 : public IMU{
   public: 
     IMU_MPU6050();
+    ~IMU_MPU6050();
     float getYaw();
     float getPitch();
     float getRoll();
@@ -19,5 +19,3 @@ class IMU_MPU6050 {
 
 
 };
-
-#endif
