@@ -8,6 +8,7 @@
 class TestSystem : public System{
 	private:
 		uint8_t testObject;
+    SDCardWriter* sd;
 	protected:
 	public:
 		TestSystem();

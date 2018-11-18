@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "TestSystem.h"
+#include "SDCardWriter.h"
 
 #define TEST 1
 
@@ -19,7 +20,7 @@ void setup(){
 }
 
 void loop(){
-	_system->updateSystem();
+	g_system->updateSystem();
 }
 
 void systemSelect(uint8_t systemType){
