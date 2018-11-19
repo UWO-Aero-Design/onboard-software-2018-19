@@ -1,0 +1,6 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+enum LEDPIN{BLUE_LED = 27, GREEN_LED, YELLOW_LED, RED_LED};
+
+#endif // CONFIG_H
