@@ -3,11 +3,14 @@
 #include "Factory.h"
 #include "SDCardWriter.h"
 #include "SDCardWriter_Teensy.h"
+#include "IMU.h"
+#include "IMU_MPU6050.h"
 
 // Initializing static class variables
 uint8_t Factory::testInstances = 0;
 uint8_t Factory::radioInstances = 0;
 uint8_t Factory::sdInstances = 0;
+uint8_t Factory::imuInstances = 0;
 
 // Default constructor
 Factory::Factory(){}
@@ -53,6 +56,25 @@ SDCardWriter* Factory::selectSD(uint8_t sdModel)
   return object;
 }
 
+IMU* Factory::selectIMU(uint8_t imuModel)
+{
+  // Returned object
+  IMU *object;
+
+  // Checking what model to create
+  switch(imuModel){
+
+    default:
+    {
+      object = new IMU_MPU6050();
+      ++imuInstances;
+      break;
+    }
+  }
+
+  return object;
+}
+
 uint8_t Factory::getTestInstances()
 {
 	return testInstances;
@@ -61,4 +83,9 @@ uint8_t Factory::getTestInstances()
 uint8_t Factory::getSDInstances()
 {
   return testInstances;
+}
+
+uint8_t Factory::getIMUInstances()
+{
+  return imuInstances;
 }

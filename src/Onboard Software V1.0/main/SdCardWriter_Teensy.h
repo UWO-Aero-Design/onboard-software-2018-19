@@ -18,12 +18,14 @@ class SDCardWriter_Teensy : public SDCardWriter{
     void setHeader(String header);
     void setFilename(String filename);
     bool isError();
+    String getErrorMessage();
 
   private:  
     void writeHeader();
     String fileHeader;
-    String dir_loc;
+    String dirLoc;
     String filename;
+    String errorMessage;
 
 };
 

@@ -9,6 +9,7 @@ class TestSystem : public System{
 	private:
 		uint8_t testObject;
     SDCardWriter* sd;
+		IMU* imu;
 	protected:
 	public:
 		TestSystem();
