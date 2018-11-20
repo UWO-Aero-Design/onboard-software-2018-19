@@ -10,17 +10,12 @@ LED::LED(uint8_t pin){
 
 }
 
-LED::LED(LEDPIN pin){
-	this->pin = (int) pin;
-	pinMode(pin, OUTPUT);
-}
-
 // TODO: Use efficient digital write not the arduino version
-void LED::turnOn(){
+void LED::turnOn() volatile{
 	digitalWrite(pin, HIGH);
 }
 
 // TODO: Use efficient digital write not the arduino version
-void LED::turnOff(){
+void LED::turnOff() volatile{
 	digitalWrite(pin, LOW);
 }

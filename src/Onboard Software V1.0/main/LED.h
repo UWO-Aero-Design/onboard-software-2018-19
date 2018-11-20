@@ -3,19 +3,15 @@
 
 #include <stdint.h>
 
-#include "Config.h"
-
 class LED{
 private:
 	uint8_t pin;
 public:
 	LED(uint8_t pin);
-	LED(LEDPIN pin);
 
-	void turnOn();
+	void turnOn() volatile;
 
-	void turnOff();
-	
+	void turnOff() volatile;
 };
 
 #endif
