@@ -19,7 +19,7 @@ void setup(){
 }
 
 void loop(){
-	_system->updateSystem();
+	g_system->updateSystem();
 }
 
 void systemSelect(uint8_t systemType){
