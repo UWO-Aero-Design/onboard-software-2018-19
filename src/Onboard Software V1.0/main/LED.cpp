@@ -29,6 +29,6 @@ void LED::turnOff() volatile{
 }
 
 // Get state
-bool getState const{
+bool LED::getState() const{
 	return state;
 }
