@@ -16,7 +16,7 @@ Factory::~Factory(){}
 // Return the number of test objects that have been created. 
 uint8_t Factory::getTestInstances()
 {
-  return testInstances;
+	return testInstances;
 }
 
 // Test method for checking if the factory works and compiles
@@ -31,7 +31,7 @@ uint8_t Factory::selectTest(uint8_t testModel)
 		default:
 		{
 			object = 1;
-      ++testInstances;
+      		++testInstances;
 			break;
 		}
 	}
@@ -42,5 +42,5 @@ uint8_t Factory::selectTest(uint8_t testModel)
 // Encapsulating LED constructor. Default LED has duration 10000, period 1000, duty 50
 LED* Factory::selectLED(uint8_t ledPin)
 {
-  return new LED(ledPin, 10000, 1000, 50);
+	return new LED(ledPin, 10000, 1000, 50);
 }

@@ -9,7 +9,6 @@
  *    https://sourcemaking.com/design_patterns/factory_method
  */
 
-
 #include <stdint.h>
 // #include every object that needs to be created
 #include "LED.h"
@@ -22,11 +21,11 @@ public:
 	Factory();
 	~Factory();
 
-  // Return the number of test objects that have been created. 
+ 	// Return the number of test objects that have been created. 
 	uint8_t getTestInstances();
 
 	uint8_t   selectTest(uint8_t model);
-  LED*      selectLED(uint8_t ledPin);
+  	LED*      selectLED(uint8_t ledPin);
 };
 
-#endif 
+#endif // FACTORY_H

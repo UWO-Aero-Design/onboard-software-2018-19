@@ -11,15 +11,15 @@
 #include "System.h"
 
 class TestSystem : public System{
-	private:
-		uint8_t testObject;
-	protected:
-	public:
-		TestSystem();
-		~TestSystem();
+private:
+	uint8_t testObject;
+protected:
+public:
+	TestSystem();
+	~TestSystem();
 
-		void initSystem();
-		void updateSystem();
+	void initSystem();
+	void updateSystem();
 };
 
 

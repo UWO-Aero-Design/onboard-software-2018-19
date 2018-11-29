@@ -32,16 +32,16 @@ protected:
     
 public:
 	LED(uint8_t pin, float duration, float period, float duty);
-  ~LED();
+ 	~LED();
 
-  // Turn on and off LED, volatile for threading use
+  	// Turn on and off LED, volatile for threading use
 	void turnOn() volatile;
 	void turnOff() volatile;
 
 	// Start thread that will last for duration
 	void startBlinking(float duration, float period, float duty);
 
-  // Getters and setters. State shouldn't be set because its dependent on the state of the LED
+  	// Getters and setters. State shouldn't be set because its dependent on the state of the LED
 	bool getState() const;
 	float getDuration() const;
 	float getPeriod() const;
@@ -52,6 +52,4 @@ public:
 	void setDuty(float duty);
 };
 
-
-
-#endif
+#endif	// LED_H

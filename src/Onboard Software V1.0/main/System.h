@@ -12,17 +12,17 @@
 #include "Factory.h"
 
 class System{
-	private:
+private:
 
-	protected:
-		Factory *factory;
+protected:
+	Factory *factory;
 		
-	public:
-		System(){}
-		virtual ~System(){}
+public:
+	System(){}
+	virtual ~System(){}
 
-		virtual void initSystem() = 0;
-		virtual void updateSystem() = 0;
+	virtual void initSystem() = 0;
+	virtual void updateSystem() = 0;
 };
 
 #endif // SYSTEM_H
