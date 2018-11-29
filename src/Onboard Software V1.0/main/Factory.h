@@ -1,30 +1,32 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include <stdint.h>
+/*
+ * File Purpose
+ *    The purpose of this file is to be a factory, which is a OOP design pattern
+ *    A factory seeks to encapsulate all object creation away from the main 
+ *    This is useful because it stream lines the addition of a new project and the modification of its constructor
+ *    https://sourcemaking.com/design_patterns/factory_method
+ */
 
+
+#include <stdint.h>
 // #include every object that needs to be created
+#include "LED.h"
 
 class Factory{
-	private:
-		static uint8_t testInstances;
-		static uint8_t radioInstances;
-	protected:
-	public:
-		Factory();
-		~Factory();
+private:
+	static uint8_t testInstances;
+protected:
+public:
+	Factory();
+	~Factory();
 
-		uint8_t getTestInstances();
+  // Return the number of test objects that have been created. 
+	uint8_t getTestInstances();
 
-		uint8_t selectTest(uint8_t model);
-
-		// TODO: Add GPS* type
-		void selectGPS(uint8_t gpsModel);
-		
-		// TODO: Add IMU* type
-		void selectIMU(uint8_t imuModel);
-
-		// TODO: Add all other components
+	uint8_t   selectTest(uint8_t model);
+  LED*      selectLED(uint8_t ledPin);
 };
 
 #endif 

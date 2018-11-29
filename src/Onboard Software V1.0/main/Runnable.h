@@ -1,7 +1,10 @@
 #ifndef RUNNABLE_H
 #define RUNNABLE_H
 
-// This is an abstract class that is reusable to allow for easy defintion of a runnable function for std::thread
+/*
+ * File Purpose
+ *    This is an abstract class that is reusable to allow for easy defintion of a runnable function for std::thread
+ */
 
 class Runnable{
 private:

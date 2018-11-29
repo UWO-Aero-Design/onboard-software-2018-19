@@ -1,3 +1,8 @@
+/*
+ * File Purpose
+ *   Implementing TestSystem.h functions
+ */
+
 // For delay and serial
 #include "Arduino.h"
 
@@ -23,7 +28,7 @@ void TestSystem::updateSystem()
 	Serial.print("Instances: ");
 	Serial.println(factory->getTestInstances());
 	
-	Serial.print("Radio Type: ");
+	Serial.print("Test Type: ");
 	Serial.println(testObject);
  
 	delay(500);

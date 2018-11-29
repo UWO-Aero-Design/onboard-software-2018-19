@@ -1,12 +1,14 @@
 #ifndef LED_H
 #define LED_H
 
-//https://github.com/maniacbug/StandardCplusplus/blob/master/examples/string_vector/string_vector.ino
-#include <StandardCplusplus.h>
-#include <vector>
+/*
+ * File Purpose
+ *    The purpose of this file is to create a simple interface for turning on and off an led
+ *    And for threading led function so that you can make an led blink for a specified amount of duty at any frequency
+ */
 
 #include <stdint.h>
-
+#include <TeensyThreads.h>
 #include "Runnable.h"
 
 class LED : public Runnable{
@@ -15,44 +17,32 @@ private:
     
 	// True means led is ON, false means led is OFF
 	bool state;
-	
+
+  // PWM Variables
 	float duration;
 	float period;
 	float duty;
-	
-	std::thread blinkThread;
-	
-	// Used to store all intialized LED pins. Cannot make a new LED object that already is tied to the same pins. 
-	// Could do in seperate class but functionality is straight forward
-	static std::vector<uint8_t> LEDS;
-	
-	// Initialize in CPP
-	//std::vector<uint_8> LED::LEDS = {};
+
+  // Thread object
+  std::thread *blinkThread;
 	
 protected:
-    void runTarget(void *arg);
+  // Runnable function that we need to implement
+  void runTarget(void *arg);
     
 public:
-	LED(uint8_t pin);
-    ~LED();
+	LED(uint8_t pin, float duration, float period, float duty);
+  ~LED();
 
+  // Turn on and off LED, volatile for threading use
 	void turnOn() volatile;
 	void turnOff() volatile;
-	
-	// Start thread with no defined duration. Will thread until told to cancel
-	void endlessBlinking(float period, float duty);
-	
-	// Start thread that will last for duration
-	void startBlinking(float period, float duration, float duty);
-	
-	// Wrapper for thread.join. Wait for thread to finish execution before passing by this function call
-	void waitForBlinking();
-	
-	// Stop thread
-	void stopBlinking();
 
+	// Start thread that will last for duration
+	void startBlinking(float duration, float period, float duty);
+
+  // Getters and setters. State shouldn't be set because its dependent on the state of the LED
 	bool getState() const;
-	
 	float getDuration() const;
 	float getPeriod() const;
 	float getDuty() const;
