@@ -10,6 +10,7 @@
 class SDCardWriter {
   public: 
     SDCardWriter();
+    
     ~SDCardWriter();
     bool isError();
     virtual void initSD() = 0;

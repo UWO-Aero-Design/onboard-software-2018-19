@@ -12,6 +12,7 @@
 class SDCardWriter_Teensy : public SDCardWriter{
   public: 
     SDCardWriter_Teensy();
+    SDCardWriter_Teensy(String dirLoc, String filename, String fileHeader);
     ~SDCardWriter_Teensy();
     void initSD();
     void writeSD(String data);

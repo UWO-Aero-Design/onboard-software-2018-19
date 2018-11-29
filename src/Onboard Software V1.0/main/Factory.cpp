@@ -61,9 +61,9 @@ IMU* Factory::selectIMU(uint8_t imuModel)
   // Returned object
   IMU *object;
 
+  if(imuInstances == 0) {
   // Checking what model to create
   switch(imuModel){
-
     default:
     {
       object = new IMU_MPU6050();
@@ -73,6 +73,12 @@ IMU* Factory::selectIMU(uint8_t imuModel)
   }
 
   return object;
+
+  }
+  else {
+    // TODO add return object when imuInstances != 0
+    return NULL;
+  }
 }
 
 uint8_t Factory::getTestInstances()

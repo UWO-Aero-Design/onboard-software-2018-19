@@ -1,12 +1,10 @@
 #include "SDCardWriter.h"
 
 
-SDCardWriter::SDCardWriter() {
-  // TODO implement type param with switch statement
-}
-
-SDCardWriter::~SDCardWriter() { }
+SDCardWriter::SDCardWriter() { }
 
 bool SDCardWriter::isError() {
   return error;
 }
+
+SDCardWriter::~SDCardWriter() { }

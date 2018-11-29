@@ -9,6 +9,12 @@ SDCardWriter_Teensy::SDCardWriter_Teensy() {
   fileHeader = ""; // what to include as a header
 }
 
+SDCardWriter_Teensy::SDCardWriter_Teensy(String dirLoc, String filename, String fileHeader) {
+  this->dirLoc = dirLoc; // location of the directory for logs
+  this->filename = filename; // name of the file
+  this-> fileHeader = fileHeader; // what to include as a header
+}
+
 SDCardWriter_Teensy::~SDCardWriter_Teensy() { }
 
 void SDCardWriter_Teensy::initSD() {
@@ -23,8 +29,8 @@ void SDCardWriter_Teensy::initSD() {
   }
   else {
   //Serial.println("Card initialized."); // success
-
-  SD.mkdir("logs"); // make the new directory
+  
+  if(SD.exists("logs")) SD.mkdir("logs"); // make the new directory
 
   writeHeader(); // write the header to the file
   }
