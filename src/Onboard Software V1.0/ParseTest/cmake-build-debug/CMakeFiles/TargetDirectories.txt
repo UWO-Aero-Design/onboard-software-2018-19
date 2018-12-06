@@ -1,0 +1,3 @@
+C:/Users/cbaro/CLionProjects/ParseTest/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/cbaro/CLionProjects/ParseTest/cmake-build-debug/CMakeFiles/ParseTest.dir
+C:/Users/cbaro/CLionProjects/ParseTest/cmake-build-debug/CMakeFiles/rebuild_cache.dir

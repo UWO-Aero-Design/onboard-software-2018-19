@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/cbaro/CLionProjects/ParseTest/BitHandler.h
+cstdint
+-
+iostream
+-
+
+C:/Users/cbaro/CLionProjects/ParseTest/Data.h
+cstdint
+-
+
+C:/Users/cbaro/CLionProjects/ParseTest/Message.h
+BitHandler.h
+C:/Users/cbaro/CLionProjects/ParseTest/BitHandler.h
+Data.h
+C:/Users/cbaro/CLionProjects/ParseTest/Data.h
+
+C:/Users/cbaro/CLionProjects/ParseTest/main.cpp
+iostream
+-
+cstring
+-
+Message.h
+C:/Users/cbaro/CLionProjects/ParseTest/Message.h
+
