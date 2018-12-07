@@ -20,28 +20,35 @@ msg::message_t Message::buildMessage(msg::aircraft_bits dataFields, uint8_t data
     message.packet.msgStart = msg::startByte;
 
     // Set start type based on who we are and the recipient
-
     message.packet.msgType = buildMessageType(recipient);
 
     // Set the data ID based on the fields selected
     message.packet.dataID = (uint16_t ) dataFields;
 
+    // TODO: Need correct buffer size
     // Build the data buffer
     message.packet.buf = new char[1000];
+
+    // TODO: Select correct message builder based on recipient
     message.packet.buf = buildAircraftMessageBuffer(dataFields, data);
 
     // Build the end bytes
     message.packet.msgEnd = msg::endByte;
 
-    //message.checksum = calcCRC();
+    //TODO: Calculate CRC
     message.checksum = 0xFF;
 
     return message;
 }
 
 // First nibble of the byte is who we are, second nibble is who we are sending to
-uint16_t Message::buildMessageType(uint8_t recipient) {
-    return 0x0B;
+uint8_t Message::buildMessageType(uint8_t recipient) {
+    uint8_t msgType = 0;
+    msgType = bitOp::setUpperByteNibble(msgType, config::thisSystem);
+    msgType = bitOp::setLowerByteNibble(msgType, recipient);
+    
+    // For debugging
+    std::cout << "Msg Type Debug: " << msgType << std::endl;
 }
 
 
@@ -297,6 +304,24 @@ void Message::parseMessage(msg::message_t msg){
 
     // First check CRC. If CRC failed, break from function
     uint16_t dataID = msg.packet.dataID;
+
+    // Check who it was from and see if it is for us
+    uint8_t msgType = msg.packet.msgType;
+    uint8_t fromWho = bitOp::readUpperByteNibble(msgType);
+    uint8_t forWho  = bitOp::readLowerByteNibble(msgType);
+
+    // Dont parse message if we receive a message that is not meant for us
+    if(forWho != thisSystem){
+        return;
+    }
+
+    // TODO: Separate parsing based on who we received the message from
+    if(fromWho == config::sysGndStation){
+        // parse GndStation
+    }else{
+        // parse Aircraft
+        // Need to know who sent it though, maybe include that in the struct that is passed to us?
+    }
 
     // Separate into a new function, just need to pass the char *buf and maybe return the data inside
     int dataIndex = 0;

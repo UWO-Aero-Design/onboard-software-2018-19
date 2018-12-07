@@ -82,9 +82,19 @@ namespace bitOp{
         return ((byte & 0xF0) | (nibble & 0xF));
     }
 
+    // Read the value of the upper nibble of byte
+    inline uint8_t getLowerByteNibble(uint8_t byte){
+        return (byte & 0xF0);
+    }
+
     // Take the value of 'nibble' and set it to the value of the upper 4 bits in byte
     inline uint8_t setUpperByteNibble(uint8_t byte, uint8_t nibble){
         return ((byte & 0x0F) | ((nibble & 0xF) << 4));
+    }
+    
+    // Read value of the lower nibble of byte
+    inline uint8_t getLowerByteNibble(uint8_t byte){
+        return (byte & 0x0F);
     }
 }
 
