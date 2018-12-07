@@ -18,7 +18,8 @@ public:
 
     msg::message_t buildMessage(msg::aircraft_bits dataFields, uint8_t dataFieldsSize, uint8_t recipient, void* data);
 
-    char* buildMessageBuf(msg::aircraft_bits dataFields, void* data);
+    char* buildGroundstationMessageBuffer(msg::gnd_station_bits dataFields, void* data);
+    char* buildAircraftMessageBuffer(msg::aircraft_bits dataFields, void* data);
     uint16_t buildMessageType(uint8_t recipient);
 
     void parseMessage(msg::message_t msg);

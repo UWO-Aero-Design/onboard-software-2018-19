@@ -76,6 +76,16 @@ namespace bitOp{
             if (i == (len) - 1) { printf("\n"); }
         }
     }
+
+    // Take the value of 'nibble' and set it to the value of the lower 4 bits in byte
+    inline uint8_t setLowerByteNibble(uint8_t byte, uint8_t nibble){
+        return ((byte & 0xF0) | (nibble & 0xF));
+    }
+
+    // Take the value of 'nibble' and set it to the value of the upper 4 bits in byte
+    inline uint8_t setUpperByteNibble(uint8_t byte, uint8_t nibble){
+        return ((byte & 0x0F) | ((nibble & 0xF) << 4));
+    }
 }
 
 #endif //PARSETEST_BITHANDLER_H

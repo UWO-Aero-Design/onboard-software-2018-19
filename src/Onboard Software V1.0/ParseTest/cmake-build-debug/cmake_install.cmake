@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/cbaro/CLionProjects/ParseTest
+# Install script for directory: C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/cbaro/CLionProjects/ParseTest/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
