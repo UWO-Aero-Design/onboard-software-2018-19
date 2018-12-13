@@ -8,6 +8,8 @@
 #include <cstdint>
 #include <iostream>
 
+// Bit operation macros
+
 // Return x as either 1 or 0, depending on the bit in 'x' at position 'y'
 #define READ(x,y) ((0u == (x & (1<<y)))?0u:1u)
 
@@ -20,7 +22,7 @@
 // Return x with bit y inverted meaning if the bit was 1, it will be 0 and if it was 0, it will be 1
 #define TOGGLE(x,y) (x ^= (1<<y))
 
-// Namespace for single use functions for handling
+// Namespace for single use functions for handling bit operations
 namespace bitOp{
 
     // READ macro wrapper to return the value of the bit in uint16_ t 'data' at position 'bitpos'

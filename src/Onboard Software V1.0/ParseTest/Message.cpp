@@ -12,7 +12,7 @@ Message::Message() {
 Message::~Message(){
 }
 
-msg::message_t Message::buildMessage(msg::aircraft_bits dataFields, uint8_t dataBufSize, uint8_t recipient, void* data) {
+msg::message_t Message::buildMessage(msg::aircraft_bits dataFields, uint8_t recipient, void* data) {
     // Message to be sent
     msg::message_t message;
 
@@ -29,14 +29,18 @@ msg::message_t Message::buildMessage(msg::aircraft_bits dataFields, uint8_t data
     // Build the data buffer
     message.packet.buf = new char[1000];
 
-    // TODO: Select correct message builder based on recipient
-    message.packet.buf = buildAircraftMessageBuffer(dataFields, data);
-
+    // Build buffer depending on who we are sending too
+    if(recipient == config::sysGndStation){
+        message.packet.buf = buildGroundstationMessageBuffer(dataFields, data);
+    }else{
+        message.packet.buf = buildGroundstationMessageBuffer(dataFields, data);
+    }
+   
     // Build the end bytes
     message.packet.msgEnd = msg::endByte;
 
     //TODO: Calculate CRC
-    message.checksum = 0xFF;
+    message.checksum = generateCRC(message.packet);
 
     return message;
 }
@@ -59,6 +63,7 @@ char* Message::buildAircraftMessageBuffer(msg::aircraft_bits dataFields, void* d
     int dataIndex = 0;
 
     msg::aircraft_message_t* aircraft = (msg::aircraft_message_t *)(data);
+
     // TODO: Need to extract size from data fields and not from struct cause struct is max size
     char* buf = new char[sizeof(aircraft)];
 
@@ -300,10 +305,16 @@ char* Message::buildGroundstationMessageBuffer(msg::gnd_station_bits dataFields,
     return buf;
 }
 
-void Message::parseMessage(msg::message_t msg){
+// TODO: Change to error codes for precise debugging
+bool Message::isMessageValid(msg::message_t msg){
 
-    // First check CRC. If CRC failed, break from function
-    uint16_t dataID = msg.packet.dataID;
+    //TODO: ADD CRC
+    bool crcResult = crcCheck(msg.packet, msg.checksum);
+
+    // CRC failed
+    if(!crcResult){
+        return false;
+    }
 
     // Check who it was from and see if it is for us
     uint8_t msgType = msg.packet.msgType;
@@ -312,16 +323,30 @@ void Message::parseMessage(msg::message_t msg){
 
     // Dont parse message if we receive a message that is not meant for us
     if(forWho != thisSystem){
-        return;
-    }
-
-    // TODO: Separate parsing based on who we received the message from
-    if(fromWho == config::sysGndStation){
-        // parse GndStation
+        return false;
     }else{
-        // parse Aircraft
-        // Need to know who sent it though, maybe include that in the struct that is passed to us?
+        // If we get here, the CRC passed, and the message is for us
+        return true;
     }
+}
+
+bool Message::crcCheck(unsecuredData_t packet, uint8_t checksum){
+    // if message.checksum != message checksummed
+    
+    // TODO. for now return true, but dont always do that
+    return true;
+}
+
+uint8_t Message::generateCRC(unsecuredData_t packet){
+    // TODO use packet to generate a checksum value
+    uint8_t checksum = 0xFF;
+    return checksum;
+}
+
+// TODO: add data extraction method. Thinking that we pass a reference to an object. Maybe replace struct with an object to abstract away the process?
+void Message::parseAircraftMessage(msg::message_t msg){
+
+    uint16_t dataID = msg.packet.dataID;
 
     // Separate into a new function, just need to pass the char *buf and maybe return the data inside
     int dataIndex = 0;
@@ -412,5 +437,9 @@ void Message::parseMessage(msg::message_t msg){
     }
 
     // End byte is only used for telling the Bluetooth to stop reading in data, not for parsing
-
 }
+
+// TODO: Parse buildGroundstationMessageBuffer
+// TODO: Question, so for glidres, it will be based on the recipient of the message, do we need to modify the struct at all? Probably solved during system integration
+
+

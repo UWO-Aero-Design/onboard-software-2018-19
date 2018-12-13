@@ -22,7 +22,12 @@ public:
     char* buildAircraftMessageBuffer(msg::aircraft_bits dataFields, void* data);
     uint8_t buildMessageType(uint8_t recipient);
 
-    void parseMessage(msg::message_t msg);
+    bool isMessageValid(msg::message_t msg);
+    bool crcCheck(unsecuredData_t packet, uint8_t checksum);
+    uint8_t generateCRC(unsecuredData_t packet);
+
+    void  parseAircraftMessage(msg::message_t msg);
+    void  parseGroundStationMessage(msg::message_t msg);
 
 
 };
