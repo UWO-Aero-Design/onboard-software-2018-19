@@ -20,7 +20,7 @@ public:
 
     char* buildGroundstationMessageBuffer(msg::gnd_station_bits dataFields, void* data);
     char* buildAircraftMessageBuffer(msg::aircraft_bits dataFields, void* data);
-    uint8_t buildMessageType(uint8_t recipient);
+    uint16_t buildMessageType(uint8_t recipient);
 
     void parseMessage(msg::message_t msg);
 

@@ -8,28 +8,28 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
+				<Option working_dir="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
+				<Option working_dir="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ParseTest">
-				<Option output="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/ParseTest.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
+				<Option output="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/ParseTest.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -43,15 +43,15 @@
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 ParseTest"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 ParseTest"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ParseTest/fast">
-				<Option output="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/ParseTest.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
+				<Option output="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/ParseTest.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -65,39 +65,39 @@
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 ParseTest/fast"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 ParseTest/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
+				<Option working_dir="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/BitHandler.h">
+		<Unit filename="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/BitHandler.h">
 			<Option target="ParseTest"/>
 		</Unit>
-		<Unit filename="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/Data.h">
+		<Unit filename="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/Data.h">
 			<Option target="ParseTest"/>
 		</Unit>
-		<Unit filename="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/Message.cpp">
+		<Unit filename="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/Message.cpp">
 			<Option target="ParseTest"/>
 		</Unit>
-		<Unit filename="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/Message.h">
+		<Unit filename="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/Message.h">
 			<Option target="ParseTest"/>
 		</Unit>
-		<Unit filename="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/main.cpp">
+		<Unit filename="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/main.cpp">
 			<Option target="ParseTest"/>
 		</Unit>
-		<Unit filename="C:/Users/Carl/Documents/Aero/Onboard/Onboard-Software/src/Onboard Software V1.0/ParseTest/CMakeLists.txt">
+		<Unit filename="C:/Users/cbaro/Documents/Aero/On Board Software/src/Onboard Software V1.0/ParseTest/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

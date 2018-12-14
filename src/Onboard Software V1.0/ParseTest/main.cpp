@@ -9,7 +9,7 @@ int main() {
     dataFields = static_cast<msg::aircraft_bits>(bitOp::setBit(dataFields, msg::airLon));
 
     Message *msg = new Message();
-    msg::message_t msgt = msg->buildMessage(dataFields, 8, 1, air);
+    msg::message_t msgt = msg->buildMessage(dataFields, 8, config::sysGlider1, air);
 
     msg->parseMessage(msgt);
     std::cout << std::endl;

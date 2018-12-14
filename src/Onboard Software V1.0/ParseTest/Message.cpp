@@ -42,13 +42,18 @@ msg::message_t Message::buildMessage(msg::aircraft_bits dataFields, uint8_t data
 }
 
 // First nibble of the byte is who we are, second nibble is who we are sending to
-uint8_t Message::buildMessageType(uint8_t recipient) {
-    uint8_t msgType = 0;
-    msgType = bitOp::setUpperByteNibble(msgType, config::thisSystem);
-    msgType = bitOp::setLowerByteNibble(msgType, recipient);
-    
-    // For debugging
-    std::cout << "Msg Type Debug: " << msgType << std::endl;
+uint16_t Message::buildMessageType(uint8_t recipient) {
+    uint8_t topHalf = config::thisSystem;
+    uint8_t bottomHalf = recipient;
+
+    uint16_t msgType = ((uint16_t)topHalf << 8) | bottomHalf;
+
+    //uint8_t partB = test & 0xff;
+    //uint8_t partA = (test >> 8);
+
+    return msgType;
+
+
 }
 
 
@@ -306,22 +311,20 @@ void Message::parseMessage(msg::message_t msg){
     uint16_t dataID = msg.packet.dataID;
 
     // Check who it was from and see if it is for us
-    uint8_t msgType = msg.packet.msgType;
-    uint8_t fromWho = bitOp::readUpperByteNibble(msgType);
-    uint8_t forWho  = bitOp::readLowerByteNibble(msgType);
+    uint16_t msgType = msg.packet.msgType;
 
     // Dont parse message if we receive a message that is not meant for us
-    if(forWho != thisSystem){
-        return;
-    }
-
-    // TODO: Separate parsing based on who we received the message from
-    if(fromWho == config::sysGndStation){
-        // parse GndStation
-    }else{
-        // parse Aircraft
-        // Need to know who sent it though, maybe include that in the struct that is passed to us?
-    }
+//    if(forWho != config::thisSystem){
+//        return;
+//    }
+//
+//    // TODO: Separate parsing based on who we received the message from
+//    if(fromWho == config::sysGndStation){
+//        // parse GndStation
+//    }else{
+//        // parse Aircraft
+//        // Need to know who sent it though, maybe include that in the struct that is passed to us?
+//    }
 
     // Separate into a new function, just need to pass the char *buf and maybe return the data inside
     int dataIndex = 0;
@@ -335,7 +338,6 @@ void Message::parseMessage(msg::message_t msg){
         int32_t lon = 0;
         memcpy(&lon,msg.packet.buf + dataIndex,sizeof(lon));
         dataIndex += sizeof(lon);
-        std::cout << lon;
     }
 
     if(bitOp::readBit(dataID, msg::airYaw)){

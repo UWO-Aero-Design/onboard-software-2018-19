@@ -17,7 +17,7 @@ namespace msg{
 
     typedef struct {
         uint8_t msgStart;
-        uint8_t msgType;
+        uint16_t msgType;
         uint16_t dataID;
         char* buf;
         uint8_t msgEnd;
