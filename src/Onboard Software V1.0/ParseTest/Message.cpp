@@ -45,14 +45,51 @@ msg::message_t Message::buildMessage(msg::aircraft_bits dataFields, uint8_t reci
     return message;
 }
 
-// First nibble of the byte is who we are, second nibble is who we are sending to
-uint8_t Message::buildMessageType(uint8_t recipient) {
-    uint8_t msgType = 0;
-    msgType = bitOp::setUpperByteNibble(msgType, config::thisSystem);
-    msgType = bitOp::setLowerByteNibble(msgType, recipient);
+// Building message type based on recipient and who we are
+uint16_t Message::buildMessageType(uint8_t recipient) {
+    uint8_t topHalf = config::thisSystem;
+    uint8_t bottomHalf = recipient;
+
+    uint16_t msgType = ((uint16_t)topHalf << 8) | bottomHalf;
+    return msgType;
+}
+
+// TODO: Change to error codes for precise debugging
+bool Message::isMessageValid(msg::message_t msg){
+
+    //TODO: ADD CRC
+    bool crcResult = crcCheck(msg.packet, msg.checksum);
+
+    // CRC failed
+    if(!crcResult){
+        return false;
+    }
+
+    // Check who it was from and see if it is for us
+    uint8_t msgType = msg.packet.msgType;
+    uint8_t fromWho = bitOp::readUpperByteNibble(msgType);
+    uint8_t forWho  = bitOp::readLowerByteNibble(msgType);
+
+    // Dont parse message if we receive a message that is not meant for us
+    if(forWho != thisSystem){
+        return false;
+    }else{
+        // If we get here, the CRC passed, and the message is for us
+        return true;
+    }
+}
+
+bool Message::crcCheck(unsecuredData_t packet, uint8_t checksum){
+    // if message.checksum != message checksummed
     
-    // For debugging
-    std::cout << "Msg Type Debug: " << msgType << std::endl;
+    // TODO. for now return true, but dont always do that
+    return true;
+}
+
+uint8_t Message::generateCRC(unsecuredData_t packet){
+    // TODO use packet to generate a checksum value
+    uint8_t checksum = 0xFF;
+    return checksum;
 }
 
 
@@ -305,44 +342,6 @@ char* Message::buildGroundstationMessageBuffer(msg::gnd_station_bits dataFields,
     return buf;
 }
 
-// TODO: Change to error codes for precise debugging
-bool Message::isMessageValid(msg::message_t msg){
-
-    //TODO: ADD CRC
-    bool crcResult = crcCheck(msg.packet, msg.checksum);
-
-    // CRC failed
-    if(!crcResult){
-        return false;
-    }
-
-    // Check who it was from and see if it is for us
-    uint8_t msgType = msg.packet.msgType;
-    uint8_t fromWho = bitOp::readUpperByteNibble(msgType);
-    uint8_t forWho  = bitOp::readLowerByteNibble(msgType);
-
-    // Dont parse message if we receive a message that is not meant for us
-    if(forWho != thisSystem){
-        return false;
-    }else{
-        // If we get here, the CRC passed, and the message is for us
-        return true;
-    }
-}
-
-bool Message::crcCheck(unsecuredData_t packet, uint8_t checksum){
-    // if message.checksum != message checksummed
-    
-    // TODO. for now return true, but dont always do that
-    return true;
-}
-
-uint8_t Message::generateCRC(unsecuredData_t packet){
-    // TODO use packet to generate a checksum value
-    uint8_t checksum = 0xFF;
-    return checksum;
-}
-
 // TODO: add data extraction method. Thinking that we pass a reference to an object. Maybe replace struct with an object to abstract away the process?
 void Message::parseAircraftMessage(msg::message_t msg){
 
@@ -435,11 +434,151 @@ void Message::parseAircraftMessage(msg::message_t msg){
         uint16_t error = 0;
         memcpy(&error,msg.packet.buf + dataIndex,sizeof(error));
     }
-
-    // End byte is only used for telling the Bluetooth to stop reading in data, not for parsing
 }
 
-// TODO: Parse buildGroundstationMessageBuffer
-// TODO: Question, so for glidres, it will be based on the recipient of the message, do we need to modify the struct at all? Probably solved during system integration
+// TODO: add data extraction method. Thinking that we pass a reference to an object. Maybe replace struct with an object to abstract away the process?
+void Message::parseGroundStationMessage(msg::message_t msg){
+
+    uint16_t dataID = msg.packet.dataID;
+
+    int dataIndex = 0;
+    if(bitOp::readBit(dataID, msg::gndTargetLat)){
+        int32_t targetLat = 0;
+        memcpy(&targetLat, msg.packet.buf + dataIndex, sizeof(targetLat));
+        dataIndex += sizeof(targetLat);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndTargetLon)){
+        int32_t targetLon = 0;
+        memcpy(&targetLon, msg.packet.buf + dataIndex, sizeof(targetLon));
+        dataIndex += sizeof(targetLon);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndCalibrate)){
+        uint8_t calibrate = 0;
+        memcpy(&calibrate, msg.packet.buf + dataIndex, sizeof(calibrate));
+        dataIndex += sizeof(calibrate);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndRSSI)){
+        uint8_t rssi = 0;
+        memcpy(&rssi, msg.packet.buf + dataIndex, sizeof(rssi));
+        dataIndex += sizeof(rssi);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndDropRequest)){
+        uint8_t dropRequest = 0;
+        memcpy(&dropRequest, msg.packet.buf + dataIndex, sizeof(dropRequest));
+        dataIndex += sizeof(dropRequest);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndGliders)){
+        uint8_t gliders = 0;
+        memcpy(&gliders, msg.packet.buf + dataIndex,sizeof(gliders));
+        dataIndex += sizeof(gliders);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor1)){
+        uint8_t motor1 = 0;
+        memcpy(&motor1, msg.packet.buf + dataIndex,sizeof(motor1));
+        dataIndex += sizeof(motor1);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor2)){
+        uint8_t motor2 = 0;
+        memcpy(&motor2, msg.packet.buf + dataIndex,sizeof(motor2));
+        dataIndex += sizeof(motor2);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor3)){
+        uint8_t motor3 = 0;
+        memcpy(&motor3, msg.packet.buf + dataIndex,sizeof(motor3));
+        dataIndex += sizeof(motor3);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor4)){
+        uint8_t motor4 = 0;
+        memcpy(&motor4, msg.packet.buf + dataIndex,sizeof(motor4));
+        dataIndex += sizeof(motor4);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor5)){
+        uint8_t motor5 = 0;
+        memcpy(&motor5, msg.packet.buf + dataIndex,sizeof(motor5));
+        dataIndex += sizeof(motor5);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor6)){
+        uint8_t motor6 = 0;
+        memcpy(&motor6, msg.packet.buf + dataIndex,sizeof(motor6));
+        dataIndex += sizeof(motor6);
+    }       
+
+    if(bitOp::readBit(dataID, msg::gndMotor7)){
+        uint8_t motor7 = 0;
+        memcpy(&motor7, msg.packet.buf + dataIndex,sizeof(motor7));
+        dataIndex += sizeof(motor7);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor8)){
+        uint8_t motor8 = 0;
+        memcpy(&motor8, msg.packet.buf + dataIndex,sizeof(motor8));
+        dataIndex += sizeof(motor8);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor9)){
+        uint8_t motor9 = 0;
+        memcpy(&motor9, msg.packet.buf + dataIndex,sizeof(motor9));
+        dataIndex += sizeof(motor9);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor10)){
+        uint8_t motor10 = 0;
+        memcpy(&motor10, msg.packet.buf + dataIndex,sizeof(motor10));
+        dataIndex += sizeof(motor10);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor11)){
+        uint8_t motor11 = 0;
+        memcpy(&motor11, msg.packet.buf + dataIndex,sizeof(motor11));
+        dataIndex += sizeof(motor11);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor12)){
+        uint8_t motor12 = 0;
+        memcpy(&motor12, msg.packet.buf + dataIndex,sizeof(motor12));
+        dataIndex += sizeof(motor12);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor13)){
+        uint8_t motor13 = 0;
+        memcpy(&motor13, msg.packet.buf + dataIndex,sizeof(motor13));
+        dataIndex += sizeof(motor13);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor14)){
+        uint8_t motor14 = 0;
+        memcpy(&motor14, msg.packet.buf + dataIndex,sizeof(motor14));
+        dataIndex += sizeof(motor14);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor15)){
+        uint8_t motor15 = 0;
+        memcpy(&motor15, msg.packet.buf + dataIndex,sizeof(motor15));
+        dataIndex += sizeof(motor15);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor16)){
+        uint8_t motor16 = 0;
+        memcpy(&motor16, msg.packet.buf + dataIndex,sizeof(motor16));
+        dataIndex += sizeof(motor16);
+    }
+
+    if(bitOp::readBit(dataID, msg::gndMotor16)){
+        uint8_t error = 0;
+        memcpy(&error, msg.packet.buf + dataIndex,sizeof(error));
+    }
+
+}
 
 
