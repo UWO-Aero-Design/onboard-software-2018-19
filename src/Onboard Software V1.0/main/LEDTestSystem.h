@@ -14,9 +14,9 @@
 class LEDTestSystem : public System{
 private:
 	LED* testLED1;
-  	LED* testLED2;
-  	LED* testLED3;
-  	LED* testLED4;
+  LED* testLED2;
+  LED* testLED3;
+  LED* testLED4;
 protected:
 public:
 	LEDTestSystem();
