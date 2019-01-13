@@ -2,12 +2,12 @@
 #define HC05_TEST_SYSTEM_H
 
 #include <stdint.h>
-#include "Bluetooth.h"
+#include "HC05.h"
 #include "System.h"
 
 class HC05BluetoothTestSystem : public System{
 private:
-  HC05Bluetooth *bluetooth;
+  HC05 *bluetooth;
 protected:
 public:
   HC05BluetoothTestSystem();
