@@ -5,9 +5,8 @@
 #ifndef PARSETEST_MESSAGE_H
 #define PARSETEST_MESSAGE_H
 
-#include "BitManipulation.h"
-#include "Config.h"
 
+#include "Config.h"
 
 class Message {
 private:
@@ -16,12 +15,12 @@ public:
     Message();
     ~Message();
 
-    msg::message_t buildMessage(msg::AirToGndFlags dataFields, uint8_t recipient, void* data);
-
-    char* buildGroundstationMessageBuffer(msg::GndToAirFlags dataFields, void* data);
-    char* buildAircraftMessageBuffer(msg::AirToGndFlags dataFields, void* data);
+    msg::message_t buildMessage(uint8_t recipient, msg::aircraft_message_t data);
     uint16_t buildMessageType(uint8_t recipient);
 
+    char* buildGroundstationMessageBuffer(void* data);
+    char* buildAircraftMessageBuffer(void* data);
+    
     bool isMessageValid(msg::message_t msg);
     bool crcCheck(msg::unsecuredData_t packet, uint8_t checksum);
     uint8_t generateCRC(msg::unsecuredData_t packet);

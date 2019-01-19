@@ -9,6 +9,7 @@
  */
 
 #include "Arduino.h"
+#include "Macros.h"
 
 // TODO(Carl Baron: Jan 10th, 2019): Global project namespaces, specific one for message
 namespace msg{
@@ -78,7 +79,7 @@ namespace msg{
 
     const uint8_t startByte     = 0x0A;
     const uint8_t endByte       = 0x0F;
-};
+}
 
 namespace config{
     typedef enum {sysPlane, sysGndStation, sysGlider1, sysGlider2} systems_t;
