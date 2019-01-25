@@ -12,17 +12,27 @@
 #include <stdint.h>
 // #include every object that needs to be created
 #include "LED.h"
+#include "IMU_MPU6050.h"
+#include "Barometer.h"
+#include "GPS_NEO6.h"
 
 class Factory{
 private:
-	static uint8_t testInstances;
+	static uint8_t IMUInstances;
+  static uint8_t baroInstances;
+  static uint8_t GPSInstances;
 protected:
 public:
 	Factory();
 	~Factory();
+ IMU_MPU6050* selectIMU(uint8_t imu);
+ Barometer* selectBaro(uint8_t imu);
+ GPS* selectGPS(uint8_t gps);
 
  	// Return the number of test objects that have been created. 
-	uint8_t getTestInstances();
+	uint8_t getIMUInstances();
+  uint8_t getBaroInstances();
+  uint8_t getGPSInstances();
 
 	uint8_t   selectTest(uint8_t model);
   	LED*      selectLED(uint8_t ledPin);

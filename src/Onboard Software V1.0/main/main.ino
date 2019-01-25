@@ -3,9 +3,11 @@
 
 #include "TestSystem.h"
 #include "LEDTestSystem.h"
+#include "CompSystem.h"
 
 #define TEST 1
 #define LED_TEST 2
+#define COMP_SYS 3
 
 System *g_system;
 
@@ -15,7 +17,7 @@ uint8_t g_systemType;
 void setup(){
 	Serial.begin(9600);
 
-	g_systemType = LED_TEST;
+	g_systemType = COMP_SYS;
   
  	systemSelect(g_systemType);
   
@@ -34,6 +36,9 @@ void systemSelect(uint8_t systemType){
 		case LED_TEST:
 			g_system = new LEDTestSystem();
 			break;
+    case COMP_SYS:
+      g_system = new CompSystem();
+      break;
 		default:
 			break;
 	}
