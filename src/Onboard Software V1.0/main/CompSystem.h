@@ -15,6 +15,7 @@ private:
   IMU_MPU6050* imu;
   Barometer* baro;
   GPS* gps;
+  SDCardWriter* sd;
 	
 protected:
 public:

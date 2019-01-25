@@ -7,26 +7,23 @@ class Barometer
 {
  public:
   Barometer();
-  boolean barometerBegin(uint8_t mode);
-  boolean barometerBegin();
-  float barometerReadTemperature(void);
-  int32_t barometerReadPressure(void);
-  int32_t barometerReadSeaLevelPressure(void);
-  int32_t barometerReadSeaLevelPressure(float altitude_meters);
-  float barometerReadAltitude(float seaLevelPressure);
-    float barometerReadAltitude(void);
-  uint16_t barometerReadRawTemperature(void);
-  uint32_t barometerReadRawPressure(void);
-
-  void barometerZero(void);
-  void barometerZero(float seaLevelPressure);
-  void barometerUpdate(void);
-
-
-  float barometerGetAltValue(void);
-  float barometerGetTempValue(void);
-  float barometerGetSeaLevelPressureValue(void);
-  Adafruit_BMP085 barometerGetBarometerSensorInterface(void);
+  boolean init(uint8_t mode);
+  boolean init();
+  float getTemperature(void);
+  int32_t getPressure(void);
+  int32_t getSeaLevelPressure(void);
+  int32_t getSeaLevelPressure(float altitude_meters);
+  float getAltitude(float seaLevelPressure);
+  float getAltitude(void);
+  uint16_t getRawTemperature(void);
+  uint32_t getRawPressure(void);
+  void zero(void);
+  void zero(float seaLevelPressure);
+  void update(void);
+  float getAltValue(void);
+  float getTempValue(void);
+  float getSeaLevelPressureValue(void);
+  Adafruit_BMP085 getBarometerSensorInterface(void);
 
  private:
   float alt, temp, seaLevelPressure = 101325;

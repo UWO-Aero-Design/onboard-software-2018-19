@@ -23,17 +23,19 @@ void CompSystem::initSystem()
   imu = factory->selectIMU(0);
   baro = factory->selectBaro(0);
   gps = factory->selectGPS(0);
+  sd = factory->selectSD(0);
   
   //imu->init(-3675, -1303, 611, 73, 50, 14);
-  baro->barometerBegin();
+  baro->init();
   gps->init();
+  sd->init();
 }
 
 void CompSystem::updateSystem()
 {
 
   //imu->update();
-  baro->barometerUpdate();
+  baro->update();
   gps->update();
 
   Serial.println(gps->getSatellites());

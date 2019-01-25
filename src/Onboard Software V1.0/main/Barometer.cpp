@@ -5,96 +5,96 @@ Barometer::Barometer() : barometerSensorInterface{}, lastUpdate{0} //did not ini
 
 }
 
-Adafruit_BMP085 Barometer::barometerGetBarometerSensorInterface(void)
+Adafruit_BMP085 Barometer::getBarometerSensorInterface(void)
 {
   return barometerSensorInterface;
 }
 
-float Barometer::barometerGetAltValue(void)
+float Barometer::getAltValue(void)
 {
   return alt;
 }
 
-float Barometer::barometerGetTempValue(void)
+float Barometer::getTempValue(void)
 {
   return temp;
 }
 
-float Barometer::barometerGetSeaLevelPressureValue(void)
+float Barometer::getSeaLevelPressureValue(void)
 {
   return seaLevelPressure;
 }
 
 // void is for the default parameter call
-boolean Barometer::barometerBegin()
+boolean Barometer::init()
 {
-  return barometerGetBarometerSensorInterface().begin();
+  return getBarometerSensorInterface().begin();
 }
 
-boolean Barometer::barometerBegin(uint8_t mode)
+boolean Barometer::init(uint8_t mode)
 {
-  return barometerGetBarometerSensorInterface().begin(mode);
+  return getBarometerSensorInterface().begin(mode);
 }
 
-uint16_t Barometer::barometerReadRawTemperature(void)
+uint16_t Barometer::getRawTemperature(void)
 {
-  return barometerGetBarometerSensorInterface().readRawTemperature();
+  return getBarometerSensorInterface().readRawTemperature();
 }
 
-uint32_t Barometer::barometerReadRawPressure(void)
+uint32_t Barometer::getRawPressure(void)
 {
-  return barometerGetBarometerSensorInterface().readRawPressure();
+  return getBarometerSensorInterface().readRawPressure();
 }
 
-int32_t Barometer::barometerReadPressure(void)
+int32_t Barometer::getPressure(void)
 {
-  return barometerGetBarometerSensorInterface().readPressure();
+  return getBarometerSensorInterface().readPressure();
 }
 // void component id for the default paramter value
-int32_t Barometer::barometerReadSeaLevelPressure()
+int32_t Barometer::getSeaLevelPressure()
 {
-  return barometerGetBarometerSensorInterface().readSealevelPressure();
+  return getBarometerSensorInterface().readSealevelPressure();
 }
 
-int32_t Barometer::barometerReadSeaLevelPressure(float altitude_meters)
+int32_t Barometer::getSeaLevelPressure(float altitude_meters)
 {
-  return barometerGetBarometerSensorInterface().readSealevelPressure(altitude_meters);
+  return getBarometerSensorInterface().readSealevelPressure(altitude_meters);
 }
 
-float Barometer::barometerReadTemperature(void)
+float Barometer::getTemperature(void)
 {
-  return barometerGetBarometerSensorInterface().readTemperature();
+  return getBarometerSensorInterface().readTemperature();
 }
 // void component is for the default parameter value
-float Barometer::barometerReadAltitude(void)
+float Barometer::getAltitude(void)
 {
-  return barometerGetBarometerSensorInterface().readAltitude();
+  return getBarometerSensorInterface().readAltitude();
 }
 
-float Barometer::barometerReadAltitude(float SeaLevelPressure)
+float Barometer::getAltitude(float SeaLevelPressure)
 {
-  return barometerGetBarometerSensorInterface().readAltitude(SeaLevelPressure);
+  return getBarometerSensorInterface().readAltitude(SeaLevelPressure);
 }
 
-void Barometer::barometerZero(void)
+void Barometer::zero(void)
 {
-  barometerZero(barometerReadSeaLevelPressure(0));
+  zero(getSeaLevelPressure(0));
 }
 
-void Barometer::barometerZero(float seaLevelPressure)
+void Barometer::zero(float seaLevelPressure)
 {
   this->alt = 0;
   this->seaLevelPressure = seaLevelPressure; //change function parameter name to not use this?
 }
   
-void Barometer::barometerUpdate()
+void Barometer::update()
 {
   long curlTime = millis();
 
   if (curlTime - lastUpdate < 1000)
     return;
 
-  alt = 0.2*barometerReadAltitude(seaLevelPressure) + 0.8*alt;
-  temp = barometerReadTemperature();
+  alt = 0.2*getAltitude(seaLevelPressure) + 0.8*alt;
+  temp = getTemperature();
   lastUpdate = curlTime;  
 }
