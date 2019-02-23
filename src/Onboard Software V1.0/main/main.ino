@@ -6,6 +6,7 @@
 
 #define TEST 1
 #define LED_TEST 2
+#define BLUETOOTH_TEST 3
 
 System *g_system;
 
@@ -15,7 +16,7 @@ uint8_t g_systemType;
 void setup(){
 	Serial.begin(9600);
 
-	g_systemType = LED_TEST;
+	g_systemType = BLUETOOTH_TEST;
   
  	systemSelect(g_systemType);
   
@@ -33,6 +34,9 @@ void systemSelect(uint8_t systemType){
 			break;
 		case LED_TEST:
 			g_system = new LEDTestSystem();
+			break;
+		case BLUETOOTH_TEST:
+			g_system = new HC05TestSystem();
 			break;
 		default:
 			break;
