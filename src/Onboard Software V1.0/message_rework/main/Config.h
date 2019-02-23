@@ -29,6 +29,7 @@ namespace msg{
         char* buf;
         uint8_t msgEnd;
     } __attribute__((__packed__)) unsecuredData_t;
+    
     typedef struct {
         unsecuredData_t packet;
         uint8_t checksum;

@@ -1,12 +1,14 @@
 #include <stdint.h>
 #include "Config.h"
 
-#include "TestSystem.h"
-#include "LEDTestSystem.h"
+//#include "TestSystem.h"
+//#include "LEDTestSystem.h"
+#include "GroundstationSystem.h"
 
 #define TEST 1
 #define LED_TEST 2
 #define BLUETOOTH_TEST 3
+#define GROUNDSTATION 4
 
 System *g_system;
 
@@ -18,7 +20,7 @@ void setup(){
 
 	g_systemType = BLUETOOTH_TEST;
   
- 	systemSelect(g_systemType);
+ 	systemSelect(GROUNDSTATION);
   
     g_system->initSystem();
 }
@@ -29,15 +31,18 @@ void loop(){
 
 void systemSelect(uint8_t systemType){
 	switch(systemType){
-		case TEST:
-			g_system = new TestSystem();
-			break;
-		case LED_TEST:
-			g_system = new LEDTestSystem();
-			break;
-		case BLUETOOTH_TEST:
-			g_system = new HC05TestSystem();
-			break;
+		// case TEST:
+		// 	g_system = new TestSystem();
+		// 	break;
+		// case LED_TEST:
+		// 	g_system = new LEDTestSystem();
+		// 	break;
+		// case BLUETOOTH_TEST:
+		// 	g_system = new HC05TestSystem();
+		// 	break;
+		case GROUNDSTATION:
+			g_system = new Groundstation();
+			break;]
 		default:
 			break;
 	}

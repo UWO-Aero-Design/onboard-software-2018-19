@@ -2,12 +2,13 @@
 //                                 separation here but honestly Bluetooth is
 //                                 temporary and hopefully obsolete next year
 #include "Arduino.h"
+#include "Config.h"
 
 
 // Asynchronous serial flags. Defined by message protocol
 // @warning: If the message protocol changes, these values may change
-const char start = 0x02;
-const char end = 0x01;
+const char start = msg::startByte;
+const char end = msg::endByte;
 const int  buffersize = 100;
 
 class HC05{
