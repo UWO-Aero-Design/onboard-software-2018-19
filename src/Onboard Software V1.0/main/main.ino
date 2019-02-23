@@ -10,15 +10,6 @@
 #define LED_TEST 2
 #define BLUETOOTH_TEST 3
 #define GROUNDSTATION 4
-=======
-#include "TestSystem.h"
-#include "LEDTestSystem.h"
-#include "CompSystem.h"
-
-#define TEST 1
-#define LED_TEST 2
-#define COMP_SYS 3
->>>>>>> feature/sensor_merge
 
 System *g_system;
 
@@ -27,12 +18,6 @@ uint8_t g_systemType;
 
 void setup(){
 	Serial.begin(9600);
-
-<<<<<<< HEAD
-	g_systemType = BLUETOOTH_TEST;
-=======
-	g_systemType = COMP_SYS;
->>>>>>> feature/sensor_merge
   
  	systemSelect(GROUNDSTATION);
   
@@ -45,7 +30,6 @@ void loop(){
 
 void systemSelect(uint8_t systemType){
 	switch(systemType){
-<<<<<<< HEAD
 		// case TEST:
 		// 	g_system = new TestSystem();
 		// 	break;
@@ -57,18 +41,7 @@ void systemSelect(uint8_t systemType){
 		// 	break;
 		case GROUNDSTATION:
 			g_system = new Groundstation();
-			break;]
-=======
-		case TEST:
-			g_system = new TestSystem();
 			break;
-		case LED_TEST:
-			g_system = new LEDTestSystem();
-			break;
-    case COMP_SYS:
-      g_system = new CompSystem();
-      break;
->>>>>>> feature/sensor_merge
 		default:
 			break;
 	}
