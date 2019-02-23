@@ -5,8 +5,8 @@
 
 // For delay and serial
 #include "Arduino.h"
-
 #include "CompSystem.h"
+#include "Config.h"
 #include "Factory.h"
 
 CompSystem::CompSystem()
@@ -20,12 +20,12 @@ CompSystem::~CompSystem(){
 
 void CompSystem::initSystem()
 {
-  imu = factory->selectIMU(0);
-  baro = factory->selectBaro(0);
+  imu = factory->selectIMU(MPU6050);
+  baro = factory->selectBaro(BMP085);
   gps = factory->selectGPS(0);
   sd = factory->selectSD(0);
   
-  //imu->init(-3675, -1303, 611, 73, 50, 14);
+  imu->init(imuOffset[0], imuOffset[1], imuOffset[2], imuOffset[3], imuOffset[4], imuOffset[5]);
   baro->init();
   gps->init();
   sd->init();
@@ -34,13 +34,19 @@ void CompSystem::initSystem()
 void CompSystem::updateSystem()
 {
 
-  //imu->update();
+  imu->update();
   baro->update();
   gps->update();
 
-  Serial.println(gps->getSatellites());
 
+  if(!plotter) Serial.print("(YPR, Temp)\t");
+  Serial.print(imu->getYaw());
+  Serial.print(" ");
+  Serial.print(imu->getPitch());
+  Serial.print(" ");
+  Serial.print(imu->getRoll());
+  Serial.print(" ");
+  if(!plotter) Serial.print(baro->getTemperature());
+  Serial.println();
   
- 
-	delay(100);
 }

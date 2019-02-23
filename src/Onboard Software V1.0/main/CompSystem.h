@@ -16,6 +16,8 @@ private:
   Barometer* baro;
   GPS* gps;
   SDCardWriter* sd;
+  int imuOffset[6] = {-3870, -1297, 632, 75, 50, 14};
+  const bool plotter = true;
 	
 protected:
 public:

@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 // #include every object that needs to be created
+#include "config.h"
 #include "LED.h"
 #include "IMU_MPU6050.h"
 #include "Barometer.h"

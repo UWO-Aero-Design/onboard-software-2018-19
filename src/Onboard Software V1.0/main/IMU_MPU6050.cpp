@@ -8,40 +8,38 @@
     #include "Wire.h"
 #endif
 
-MPU6050 mpu;
+    //bool blinkState = false;
 
+    // MPU control/status vars
+    //bool dmpReady = false;  // set true if DMP init was successful
+    //uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
+    //uint8_t devStatus;      // return status after each device operation (0 = success, !0 = error)
+    //uint16_t packetSize;    // expected DMP packet size (default is 42 bytes)
+    //uint16_t fifoCount;     // count of all bytes currently in FIFO
+    //uint8_t fifoBuffer[64]; // FIFO storage buffer
 
-bool blinkState = false;
-
-// MPU control/status vars
-bool dmpReady = false;  // set true if DMP init was successful
-uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
-uint8_t devStatus;      // return status after each device operation (0 = success, !0 = error)
-uint16_t packetSize;    // expected DMP packet size (default is 42 bytes)
-uint16_t fifoCount;     // count of all bytes currently in FIFO
-uint8_t fifoBuffer[64]; // FIFO storage buffer
-
-// orientation/motion vars
-Quaternion q;           // [w, x, y, z]         quaternion container
-VectorFloat gravity;    // [x, y, z]            gravity vector
-float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
-
-// offsets
-
+    // orientation/motion vars
+    Quaternion q;           // [w, x, y, z]         quaternion container
+    VectorFloat gravity;    // [x, y, z]            gravity vector
+    float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+    MPU6050 mpu;
 
 IMU_MPU6050::IMU_MPU6050() { }
 
 
 IMU_MPU6050::~IMU_MPU6050() { }
 
+// returns IMU's yaw in degrees
 float IMU_MPU6050::getYaw() {
     return ypr[0] * 180/M_PI;
 }
 
+// returns IMU's pitch in degrees
 float IMU_MPU6050::getPitch() {
     return ypr[1] * 180/M_PI;
 }
 
+// returns IMU's roll in degrees
 float IMU_MPU6050::getRoll() {
     return ypr[2] * 180/M_PI;
 }
@@ -118,7 +116,7 @@ void IMU_MPU6050::update() {
     if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
-        Serial.println(F("FIFO overflow!"));
+        //Serial.println(F("FIFO overflow!"));
 
     // otherwise, check for DMP data ready interrupt (this should happen frequently)
     } else {        // Commented out by 109jb -->  if (mpuIntStatus & 0x02) {
@@ -140,11 +138,11 @@ void IMU_MPU6050::update() {
     }
 }
 
-void IMU_MPU6050::printYPR() {
+/*void IMU_MPU6050::printYPR() {
     Serial.print("ypr\t");
     Serial.print(ypr[0] * 180/M_PI);
     Serial.print("\t");
     Serial.print(ypr[1] * 180/M_PI);
     Serial.print("\t");
     Serial.println(ypr[2] * 180/M_PI);
-  }
+  }*/

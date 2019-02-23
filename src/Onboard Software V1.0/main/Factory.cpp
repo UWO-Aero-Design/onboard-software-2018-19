@@ -41,6 +41,12 @@ IMU_MPU6050* Factory::selectIMU(uint8_t imu) {
 	// Checking what model to create
 	switch(imu)
 	{
+    case(MPU6050):
+    {
+      object = new IMU_MPU6050();
+          ++IMUInstances;
+      break;
+    }
 		default:
 		{
 			object = new IMU_MPU6050();

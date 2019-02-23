@@ -10,5 +10,7 @@
 // As of Onboard PCB V1.0, these are the pin mappings for the LEDs
 // Blue = 27, Green = 28, Yellow = 29, Red = 30
 enum LEDPIN{BLUE_LED = 27, GREEN_LED, YELLOW_LED, RED_LED};
+enum IMUSENSOR{MPU6050};
+enum BAROMETERENSOR{BMP085};
 
 #endif // CONFIG_H
