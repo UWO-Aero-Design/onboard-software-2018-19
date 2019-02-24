@@ -52,39 +52,39 @@ IMU_MPU6050* Factory::selectIMU(uint8_t imu) {
 }
 
 
-Barometer* Factory::selectBaro(uint8_t baro) {
-  // Returned object
-  Barometer* object;
+//Barometer* Factory::selectBaro(uint8_t baro) {
+//  // Returned object
+//  Barometer* object;
+//
+//  // Checking what model to create
+//  switch(baro)
+//  {
+//    default:
+//    {
+//      object = new Barometer();
+//          ++baroInstances;
+//      break;
+//    }
+//  }
+//  return object;
+//}
 
-  // Checking what model to create
-  switch(baro)
-  {
-    default:
-    {
-      object = new Barometer();
-          ++baroInstances;
-      break;
-    }
-  }
-  return object;
-}
-
-GPS* Factory::selectGPS(uint8_t gps) {
-  // Returned object
-  GPS* object;
-
-  // Checking what model to create
-  switch(gps)
-  {
-    default:
-    {
-      object = new GPS_NEO6();
-          ++GPSInstances;
-      break;
-    }
-  }
-  return object;
-}
+//GPS* Factory::selectGPS(uint8_t gps) {
+//  // Returned object
+//  GPS* object;
+//
+//  // Checking what model to create
+//  switch(gps)
+//  {
+//    default:
+//    {
+//      object = new GPS_NEO6();
+//          ++GPSInstances;
+//      break;
+//    }
+//  }
+//  return object;
+//}
 
 SDCardWriter* Factory::selectSD(uint8_t sd) {
   // Returned object

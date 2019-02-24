@@ -1,15 +1,15 @@
 #include <stdint.h>
 #include "Config.h"
 
-<<<<<<< HEAD
 //#include "TestSystem.h"
 //#include "LEDTestSystem.h"
-#include "GroundstationSystem.h"
+#include "OnboardSystem.h"
 
 #define TEST 1
 #define LED_TEST 2
 #define BLUETOOTH_TEST 3
 #define GROUNDSTATION 4
+#define ONBOARD 5
 
 System *g_system;
 
@@ -19,7 +19,7 @@ uint8_t g_systemType;
 void setup(){
 	Serial.begin(9600);
   
- 	systemSelect(GROUNDSTATION);
+ 	systemSelect(ONBOARD);
   
     g_system->initSystem();
 }
@@ -39,9 +39,15 @@ void systemSelect(uint8_t systemType){
 		// case BLUETOOTH_TEST:
 		// 	g_system = new HC05TestSystem();
 		// 	break;
-		case GROUNDSTATION:
-			g_system = new Groundstation();
-			break;
+//		case GROUNDSTATION:
+//			g_system = new OnboardSystem();
+//			break;
+    case ONBOARD:
+    {
+      g_system = new OnboardSystem();
+      break;
+    }
+    
 		default:
 			break;
 	}

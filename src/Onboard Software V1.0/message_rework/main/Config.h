@@ -11,6 +11,9 @@
 #include "Arduino.h"
 #include "Macros.h"
 
+
+
+
 // TODO(Carl Baron: Jan 10th, 2019): Global project namespaces, specific one for message
 namespace msg{
   // Data flags for a message being sent from an aircraft to the groundstation
