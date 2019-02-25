@@ -12,6 +12,11 @@
 //   SoftwareSerial *myPort;
 //   HC05 *bluetooth;
 //   RH_RF95 *rf95
+
+//int RADIO_MSG_RATE_MS = 1000;
+
+//   char* bleBuffer;
+//   bool bufferFilled;
 // protected:
 // public:
 //   Groundstation();
