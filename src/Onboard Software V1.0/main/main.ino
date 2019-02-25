@@ -3,6 +3,7 @@
 
 //#include "TestSystem.h"
 //#include "LEDTestSystem.h"
+#include "GroundstationSystem.h"
 #include "OnboardSystem.h"
 
 #define TEST 1
@@ -39,16 +40,17 @@ void systemSelect(uint8_t systemType){
 		// case BLUETOOTH_TEST:
 		// 	g_system = new HC05TestSystem();
 		// 	break;
-//		case GROUNDSTATION:
-//			g_system = new OnboardSystem();
-//			break;
-    case ONBOARD:
-    {
-      g_system = new OnboardSystem();
-      break;
-    }
-    
+		case GROUNDSTATION:
+		{
+			g_system = new Groundstation();
+		} break;
+    	case ONBOARD:
+    	{
+      		g_system = new OnboardSystem();
+    	} break;
 		default:
-			break;
+		{
+			// default
+		} break;
 	}
 }
