@@ -1,29 +1,34 @@
-// #ifndef GROUNDSTATION_SYSTEM_H
-// #define GROUNDSTATION_SYSTEM_H
+#ifndef GROUNDSTATION_SYSTEM_H
+#define GROUNDSTATION_SYSTEM_H
 
-// #include <stdint.h>
-// #include "SPI.h"
-// #include "RH_RF95.h"
-// #include "HC05.h"
-// #include "System.h"
+#include <stdint.h>
+#include "SPI.h"
+#include "RH_RF95.h"
+#include "HC05.h"
+#include "System.h"
 
-// class Groundstation : public System{
-// private:
-//   SoftwareSerial *myPort;
-//   HC05 *bluetooth;
-//   RH_RF95 *rf95
+class Groundstation : public System{
+private:
+  SoftwareSerial *myPort;
+  HC05 *bluetooth;
+  RH_RF95 *rf95
 
-//int RADIO_MSG_RATE_MS = 1000;
+  // Led objects
+  LED* ledReceived;
+  LED* ledSent;
 
-//   char* bleBuffer;
-//   bool bufferFilled;
-// protected:
-// public:
-//   Groundstation();
-//   ~Groundstation();
+  int RADIO_MSG_RATE_MS = 1000;
 
-//   void initSystem();
-//   void updateSystem();
-// };
+  char* bleBuffer;
+  bool bufferFilled;
 
-// #endif // GROUNDSTATION_SYSTEM_H
+protected:
+public:
+  Groundstation();
+  ~Groundstation();
+
+  void initSystem();
+  void updateSystem();
+};
+
+#endif // GROUNDSTATION_SYSTEM_H
