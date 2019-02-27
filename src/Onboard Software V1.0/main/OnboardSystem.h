@@ -18,10 +18,10 @@
 class OnboardSystem : public System{
 private:
   // Sensors and sensor factory
-  Factory* factory;
-  IMU_MPU6050* imu;
-  Barometer* baro;
-  GPS* gps;
+  //Factory* factory;
+  //IMU_MPU6050* imu;
+  //Barometer* baro;
+  //GPS* gps;
 
   // SDCardWriter* sd;
 

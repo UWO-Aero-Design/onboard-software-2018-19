@@ -20,7 +20,7 @@ uint8_t g_systemType;
 void setup(){
 	Serial.begin(9600);
   
- 	systemSelect(ONBOARD);
+ 	systemSelect(GROUNDSTATION);
   
     g_system->initSystem();
 }

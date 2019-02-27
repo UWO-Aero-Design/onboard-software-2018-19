@@ -20,7 +20,7 @@ Groundstation::~Groundstation()
 void Groundstation::initSystem()
 {
   // Buffer setup
-  bleBuffer = new char[100];
+  //bleBuffer = new char[100];
   bufferFilled = false;
 
   // Init radio reset pin
@@ -33,10 +33,12 @@ void Groundstation::initSystem()
   delay(100);
 
   // Objects
-  myPort = new SoftwareSerial(10,11);
-  myPort->begin(9600);
+  //myPort = new SoftwareSerial(10,11);
+  //myPort->begin(9600);
+  Serial4.begin(9600);
+  
   bluetooth = new HC05(myPort); 
-  rf95 = new RH_RF95();
+  rf95 = new RH_RF95(radio::RFM95_CS, radio::RFM95_INT);
 
   // Manual radio reset
   digitalWrite(radio::RFM95_RST, LOW);
@@ -56,7 +58,7 @@ void Groundstation::initSystem()
     Serial.println("setFrequency failed");
     while (1);
   }
-  Serial.print("Set Freq to: "); Serial.println(radio::RFM95_FREQUENCY);
+  Serial.print("GND. Set Freq to: "); Serial.println(radio::RFM95_FREQUENCY);
   
   // Set power
   rf95->setTxPower(radio::RFM95_TX_POWER, false);
@@ -68,7 +70,7 @@ void Groundstation::initSystem()
 void Groundstation::updateSystem()
 {
     // add port available wrap to hc05 class? 
-    if(myPort->available())
+    if(Serial4.available())
     {
         // bleBuffer = bluetooth->performStringRead();
         // if(!(bleBuffer[0] = 0x00))
@@ -78,35 +80,39 @@ void Groundstation::updateSystem()
 
         // testing to see if messages route to other board over radio
         // String copy for this operation?
-        bleBuffer = myPort->read();
+        bleBuffer = (char)Serial4.read();
+        Serial.println(bleBuffer);
         bufferFilled = true;
     }
 
     if(bufferFilled)
     {
         Serial.println("Sending..."); delay(10);
-        rf95->send((uint8_t *) bleBuffer, sizeof(bleBuffer));
+        char test[2];
+        test[0] = bleBuffer;
+        test[1] = 0;
+        rf95->send((uint8_t *) test, sizeof(test));
 
         Serial.println("Waiting for packet to complete..."); 
         delay(10);
-        rf95.waitPacketSent();
+        rf95->waitPacketSent();
 
         // Now wait for a reply
         uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
         uint8_t len = sizeof(buf);
 
         Serial.println("Waiting for reply..."); delay(10);
-        if (rf95.waitAvailableTimeout(1000))
+        if (rf95->waitAvailableTimeout(1000))
         { 
             // Should be a reply message for us now   
-            if (rf95.recv(buf, &len))
+            if (rf95->recv(buf, &len))
             {
                 Serial.print("Got reply: ");
                 Serial.println((char*)buf);
                 Serial.print("RSSI: ");
-                Serial.println(rf95.lastRssi(), DEC); 
+                Serial.println(rf95->lastRssi(), DEC); 
 
-                myPort->write((char*)buf);
+                Serial4.write((char*)buf);
             }
             else
             {

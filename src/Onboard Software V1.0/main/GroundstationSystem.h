@@ -1,6 +1,7 @@
 #ifndef GROUNDSTATION_SYSTEM_H
 #define GROUNDSTATION_SYSTEM_H
 
+#include "SoftwareSerial.h"
 #include <stdint.h>
 #include "SPI.h"
 #include "RH_RF95.h"
@@ -11,7 +12,7 @@ class Groundstation : public System{
 private:
   SoftwareSerial *myPort;
   HC05 *bluetooth;
-  RH_RF95 *rf95
+  RH_RF95 *rf95;
 
   // Led objects
   LED* ledReceived;
@@ -19,7 +20,7 @@ private:
 
   int RADIO_MSG_RATE_MS = 1000;
 
-  char* bleBuffer;
+  char bleBuffer;
   bool bufferFilled;
 
 protected:

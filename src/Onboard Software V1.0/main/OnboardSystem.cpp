@@ -11,17 +11,24 @@
 #include "Config.h"
 #include "OnboardSystem.h"
 
+// temp
+#define CAL_IMU 0
+#define CAL_GPS 1
+#define CAL_BARO 2
+#define PAYLOAD_DROP 0
+#define GLIDER_DROP 1
+
 // Only build factory on startup
 OnboardSystem::OnboardSystem()
 {
-	factory = new Factory();
+	//factory = new Factory();
 }
 
 // Clean up objects
 OnboardSystem::~OnboardSystem(){
-	delete imu;
-  delete baro;
-  delete gps;
+	//delete imu;
+  //delete baro;
+  //delete gps;
 
   delete rf95;
 
@@ -33,9 +40,9 @@ OnboardSystem::~OnboardSystem(){
 void OnboardSystem::initSystem()
 {
   // Create sensor objects
-  imu = factory->selectIMU(0);
-  baro = factory->selectBaro(0);
-  gps = factory->selectGPS(0);
+  //imu = factory->selectIMU(0);
+  //baro = factory->selectBaro(0);
+  //gps = factory->selectGPS(0);
   // sd = factory->selectSD(0);
 
   // Create radio object
@@ -77,18 +84,18 @@ void OnboardSystem::initSystem()
   ledSent = new LED(LEDPIN::YELLOW_LED,0,0,0);
   
   // Initialize IMU objects
-  imu->init(-3675, -1303, 611, 73, 50, 14);
-  baro->init();
-  gps->init();
+  //imu->init(-3675, -1303, 611, 73, 50, 14);
+  //baro->init();
+  //gps->init();
   //sd->init();
 }
 
 void OnboardSystem::updateSystem()
 {
   // Update sensors
-  imu->update();
-  baro->update();
-  gps->update();
+  //imu->update();
+  //baro->update();
+  //gps->update();
 
   // If the radio is available aka something has been sent to us
   if (rf95->available())
@@ -220,5 +227,3 @@ bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
   // Remove this line after debugging and uncomment return false in else statement
   return true;
 }
-
-
