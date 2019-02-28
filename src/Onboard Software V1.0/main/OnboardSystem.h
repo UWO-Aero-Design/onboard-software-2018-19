@@ -29,8 +29,8 @@ private:
   RH_RF95 *rf95;
 
   // Led objects
-  LED* ledReceived;
-  LED* ledSent;
+  LED* ledRadio;
+  LED* ledLoop;
 
   // Drop locations of gliders and payload
   float gliderDropLat;

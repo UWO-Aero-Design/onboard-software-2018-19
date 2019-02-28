@@ -19,10 +19,10 @@ private:
   // Led objects
   LED* ledBluetooth;
   LED* ledRadio;
+  LED* ledLoop;
 
   // Bluetooth
-  void updateBluetoothBuffer(void);
- 
+
   char _buffer[buffersize];
   bool bufferFilled;
 

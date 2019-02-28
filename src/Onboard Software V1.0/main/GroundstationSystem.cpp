@@ -18,6 +18,7 @@ Groundstation::~Groundstation()
   delete rf95;
   delete ledBluetooth;
   delete ledRadio;
+  delete ledLoop;
 };
 
 void Groundstation::initSystem()
@@ -40,6 +41,7 @@ void Groundstation::initSystem()
 
   ledBluetooth = new LED(LEDPIN::YELLOW_LED,0,0,0);
   ledRadio = new LED(LEDPIN::BLUE_LED,0,0,0);
+  ledLoop = new LED(LEDPIN::GREEN_LED,0,0,0);
 
   started = false;
   ended = false;
@@ -67,68 +69,6 @@ void Groundstation::initSystem()
   
   // Set power
   rf95->setTxPower(radio::RFM95_TX_POWER, false);
-
-}
-
-void Groundstation::updateBluetoothBuffer(void)
-{
-  // bool started = false;
-  // bool ended = false;
-  // uint8_t index = 0;
-  
-  // while(Serial4.available())
-  // {
-    
-  //   char in = Serial4.read();
-    
-  //   Serial.println((uint8_t)in);
-
-  //   // If the input byte is the start byte, reset the buffer
-  //   if(in == _start)
-  //   {
-  //     index = 0;
-  //     _buffer[index] = in;
-  //     started = true;
-  //     ended = false;
-  //   }
-  //   // If the input byte is the end byte, end the bufer
-  //   // TODO(Carl Baron: Jan 12th, 2019): Move crc before end of packet
-  //   else if(in == _end)
-  //   {
-  //     _buffer[index] = in;
-  //     ended = true;
-  //     break;
-  //   }
-  //   // If the byte is between start and end
-  //   else if(started == true)
-  //   {
-  //     if(index < (buffersize - 1))
-  //     {
-  //       _buffer[index] = in;
-  //       index += 1;
-  //     }
-  //   }
-  // }
-
-  // if(started && ended){
-  //   bufferFilled = true;
-  // }
-
-  // Serial.print("Started: ");
-  // Serial.println(started);
-  // Serial.print("Ended: ");
-  // Serial.println(ended);
-
-  // if(ended == false){
-
-  //   if(fails < sizeof(msg::ground_to_board_msg_t)){
-  //     updateBluetoothBuffer();
-  //   }
-  //   ++fails;
-
-  //   Serial.print("Fails: ");
-  //   Serial.println(fails);
-  //}
 
 }
 
@@ -175,7 +115,6 @@ void Groundstation::updateSystem()
         Serial.print(index);
         Serial.print(" Else: ");
         Serial.println((uint8_t)_buffer[index]);
-        //index += 1;
       }
     }
 
@@ -244,7 +183,9 @@ void Groundstation::updateSystem()
           Serial.println("No reply, is there a listener around?");
       }
 
+      ledLoop->turnOn();
       delay(RADIO_MSG_RATE_MS);
+      ledLoop->turnOff();
 
   }
 }

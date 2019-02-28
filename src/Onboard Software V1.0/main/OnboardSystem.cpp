@@ -33,8 +33,8 @@ OnboardSystem::~OnboardSystem(){
 
   delete rf95;
 
-  delete ledReceived;
-  delete ledSent;
+  delete ledRadio;
+  delete ledLoop;
 }
 
 // Init system
@@ -81,8 +81,8 @@ void OnboardSystem::initSystem()
   rf95->setTxPower(radio::RFM95_TX_POWER, false);
 
   // Init led pins
-  ledReceived = new LED(LEDPIN::BLUE_LED,0,0,0);
-  ledSent = new LED(LEDPIN::YELLOW_LED,0,0,0);
+  ledRadio = new LED(LEDPIN::BLUE_LED,0,0,0);
+  ledLoop = new LED(LEDPIN::GREEN_LED,0,0,0);
   
   // Initialize IMU objects
   //imu->init(-3675, -1303, 611, 73, 50, 14);
@@ -101,6 +101,7 @@ void OnboardSystem::updateSystem()
   // If the radio is available aka something has been sent to us
   if (rf95->available())
   {
+    ledRadio->turnOn();
     // Should be a message for us now   
     uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
     uint8_t len = sizeof(buf);
@@ -109,7 +110,7 @@ void OnboardSystem::updateSystem()
     if (rf95->recv(buf, &len))
     {
       // Toggle receive led
-      ledReceived->turnOn();
+      
 
       // Debuggging
        RH_RF95::printBuffer("Received: ", buf, len);
@@ -147,14 +148,10 @@ void OnboardSystem::updateSystem()
         rf95->send(data, sizeof(data));
 
         // Turn on send led and wait for packet to send
-        ledSent->turnOn();
         rf95->waitPacketSent();
         Serial.println("Sent a reply");
+        ledRadio->turnOff();
       }
-
-      // Turn off leds
-      ledSent->turnOff();
-      ledReceived->turnOff();
     }
     else
     {
@@ -162,7 +159,9 @@ void OnboardSystem::updateSystem()
     }
   }
 
+  ledLoop->turnOn();
 	delay(100);
+  ledLoop->turnOff();
 }
 
 bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet) 
