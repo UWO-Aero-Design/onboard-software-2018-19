@@ -10,6 +10,7 @@
 #include "RH_RF95.h"
 #include "Config.h"
 #include "OnboardSystem.h"
+#include "BitManipulation.h"
 
 // temp
 #define CAL_IMU 0
@@ -111,10 +112,10 @@ void OnboardSystem::updateSystem()
       ledReceived->turnOn();
 
       // Debuggging
-      //RH_RF95::printBuffer("Received: ", buf, len);
-      // Serial.print("Got: ");
-      // Serial.println((char*)buf);
-      // Serial.print("Received message with RSSI: ");
+       RH_RF95::printBuffer("Received: ", buf, len);
+       Serial.print("Got: ");
+       Serial.println((char*)buf);
+       Serial.print("Received message with RSSI: ");
       Serial.println(rf95->lastRssi(), DEC);
 
       // Handle request
@@ -166,16 +167,81 @@ void OnboardSystem::updateSystem()
 
 bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet) 
 {
+
+  // TODO: NEED TO SWAP ENDIANS AFTER RECEIVING PACKETS
+
   Serial.println("Processing commands");
   // Enter logic processing down here ... 
 
+  Serial.print("Msg start: ");
+  Serial.println(packet->msgStart);
+  
+  Serial.print("Msg type: ");
+  Serial.println(packet->msgType);
+
+    Serial.print("targetLat: ");
+  Serial.println(bit::swapINT32(packet->targetLat));
+
+    Serial.print("targetLon: ");
+  Serial.println(bit::swapINT32(packet->targetLon));
+
+    Serial.print("calibrate: ");
+  Serial.println(packet->calibrate);
+
+    Serial.print("rssi: ");
+  Serial.println(packet->rssi);
+
+    Serial.print("dropRequest: ");
+  Serial.println(packet->dropRequest);
+
+    Serial.print("gliders: ");
+  Serial.println(packet->gliders);
+
+    Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor1));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor2));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor3));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor4));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor5));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor6));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor7));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor8));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor9));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor10));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor11));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor12));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor13));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor14));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor15));
+      Serial.print("Motor: ");
+  Serial.println(bit::swapUINT16(packet->motor16));
+
+
+          Serial.print("Error: ");
+  Serial.println(packet->error);
+
+          Serial.print("End: ");
+  Serial.println(packet->msgEnd);
+    
   // Check if it is for us. If it is for us, parse appropriately 
   if(packet->msgType == static_cast<uint16_t>(config::sysPlane))
   {
-    // Copy in data
-    targetLat = packet->targetLat;
-    targetLon = packet->targetLon;
 
+    
     // Calibration request
     switch(packet->calibrate)
     {

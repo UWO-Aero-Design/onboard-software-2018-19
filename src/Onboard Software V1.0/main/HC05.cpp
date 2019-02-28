@@ -54,7 +54,7 @@ char HC05::performByteRead(void)
 // Read an entire message
 char* HC05::performStringRead(void)
 {
-  static char buffer[buffersize];
+  char buffer[100];
   bool started = false;
   bool ended = false;
   uint8_t index = 0;

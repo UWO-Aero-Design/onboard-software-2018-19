@@ -154,7 +154,7 @@ namespace msg{
 
 
     const uint8_t startByte     = 0x0A;
-    const uint8_t endByte       = 0x0F;
+    const uint8_t endByte       = 0xFF;
 }
 
 namespace config{
