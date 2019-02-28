@@ -167,79 +167,37 @@ void OnboardSystem::updateSystem()
 bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet) 
 {
 
-  // TODO: NEED TO SWAP ENDIANS AFTER RECEIVING PACKETS
-
   Serial.println("Processing commands");
-  // Enter logic processing down here ... 
 
-  Serial.print("Msg start: ");
-  Serial.println(packet->msgStart);
-  
-  Serial.print("Msg type: ");
-  Serial.println(packet->msgType);
-
-    Serial.print("targetLat: ");
-  Serial.println(bit::swapINT32(packet->targetLat));
-
-    Serial.print("targetLon: ");
-  Serial.println(bit::swapINT32(packet->targetLon));
-
-    Serial.print("calibrate: ");
-  Serial.println(packet->calibrate);
-
-    Serial.print("rssi: ");
-  Serial.println(packet->rssi);
-
-    Serial.print("dropRequest: ");
-  Serial.println(packet->dropRequest);
-
-    Serial.print("gliders: ");
-  Serial.println(packet->gliders);
-
-    Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor1));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor2));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor3));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor4));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor5));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor6));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor7));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor8));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor9));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor10));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor11));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor12));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor13));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor14));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor15));
-      Serial.print("Motor: ");
-  Serial.println(bit::swapUINT16(packet->motor16));
-
-
-          Serial.print("Error: ");
-  Serial.println(packet->error);
-
-          Serial.print("End: ");
-  Serial.println(packet->msgEnd);
+  // Enter logic processing down here ...
+  // Step 1. Swap order of bits because of struct packing for values greater than 8 bits
+  packet->msgType = bit::swapUINT16(packet->msgType);
+  packet->targetLat = bit::swapINT32(packet->targetLat);
+  packet->targetLon = bit::swapINT32(packet->targetLon);
+  packet->motor1 = bit::swapUINT16(packet->motor1);
+  packet->motor1 = bit::swapUINT16(packet->motor2);
+  packet->motor1 = bit::swapUINT16(packet->motor3);
+  packet->motor1 = bit::swapUINT16(packet->motor4);
+  packet->motor1 = bit::swapUINT16(packet->motor5);
+  packet->motor1 = bit::swapUINT16(packet->motor6);
+  packet->motor1 = bit::swapUINT16(packet->motor7);
+  packet->motor1 = bit::swapUINT16(packet->motor8);
+  packet->motor1 = bit::swapUINT16(packet->motor9);
+  packet->motor1 = bit::swapUINT16(packet->motor10);
+  packet->motor1 = bit::swapUINT16(packet->motor11);
+  packet->motor1 = bit::swapUINT16(packet->motor12);
+  packet->motor1 = bit::swapUINT16(packet->motor13);
+  packet->motor1 = bit::swapUINT16(packet->motor14);
+  packet->motor1 = bit::swapUINT16(packet->motor15);
+  packet->motor1 = bit::swapUINT16(packet->motor16);
+  packet->error = bit::swapUINT16(packet->error);
     
   // Check if it is for us. If it is for us, parse appropriately 
   if(packet->msgType == static_cast<uint16_t>(config::sysPlane))
   {
-
+    // Storing target lat and target lon
+    targetLat = packet->targetLat/1000000;
+    targetLon = packet->targetLon/1000000;
     
     // Calibration request
     switch(packet->calibrate)
@@ -247,34 +205,44 @@ bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
       case CAL_IMU:
       {
         // CALIBRATE IMU LOGIC
+        Serial.println("Calibrating IMU...");
       }break;
 
       case CAL_GPS:
       {
         // CALIBRATE GPS LOGIC
+        Serial.println("Calibrating GPS...");
       }break;
 
       case CAL_BARO:
       {
         // CALIBRATE BARO LOGIC
+        Serial.println("Calibrating Barometer...");
       }break;
       default:
       {
         // NOTHING
+        Serial.println("Undefined calibrate bit...");
+        Serial.print("Value: ");
+        Serial.println(packet->calibrate);
       }break;
     }
 
-    // Drop request
+    // Drop request. Need to handle load/unload
     switch(packet->dropRequest)
     {
       case GLIDER_DROP:
       {
         // GLIDER DROP LOGIC with motor controller
+        //gliderDropLat = gps.getLat();
+        //gliderDropLon = gps.getLon();
       }break;
 
       case PAYLOAD_DROP:
       {
         // PAYLOAD DROP LOGIC with motor controller
+        //payloadDropLat = gps.getLat();
+        //payloadDropLon = gps.getLon();
       }break;
 
       default:
