@@ -8,23 +8,27 @@
 Groundstation::Groundstation()
 {
 	// do nothing
+  Serial.println("GROUND STATION SYSTEM SELECTED");
 };
 
 Groundstation::~Groundstation()
 {
+  // Turn off all LEDS before destruction
   ledBluetooth->turnOff();
   ledRadio->turnOff();
+  ledLoop->turnOff();
 
+  // Free all memory
   delete rf95;
   delete ledBluetooth;
   delete ledRadio;
   delete ledLoop;
 };
 
+// Initialize the system
 void Groundstation::initSystem()
 {
-  // Buffer setup
-  bufferFilled = false;
+  Serial.println("Initialization ground station system...");
 
   // Init radio reset pin
   pinMode(radio::RFM95_RST, OUTPUT);
@@ -38,14 +42,15 @@ void Groundstation::initSystem()
   // Objects
   Serial4.begin(9600);
   rf95 = new RH_RF95(radio::RFM95_CS, radio::RFM95_INT);
-
   ledBluetooth = new LED(LEDPIN::YELLOW_LED,0,0,0);
   ledRadio = new LED(LEDPIN::BLUE_LED,0,0,0);
   ledLoop = new LED(LEDPIN::GREEN_LED,0,0,0);
 
+  // Setup up bluetooth buffer variables
   started = false;
   ended = false;
   index = 0;
+  bufferFilled = false;
 
   // Manual radio reset
   digitalWrite(radio::RFM95_RST, LOW);
@@ -65,9 +70,11 @@ void Groundstation::initSystem()
     Serial.println("setFrequency failed");
     while (1);
   }
-  Serial.print("GND. Set Freq to: "); Serial.println(radio::RFM95_FREQUENCY);
+
+  // Setting the radio frequency to 915 MHz
+  Serial.print("Set Freq to: "); Serial.println(radio::RFM95_FREQUENCY);
   
-  // Set power
+  // Set power to maximum
   rf95->setTxPower(radio::RFM95_TX_POWER, false);
 
 }
@@ -81,46 +88,57 @@ void Groundstation::updateSystem()
   {
 
     ledBluetooth->turnOn();
-  
+
+    // Read in a single input byte
     char in = Serial4.read();
     Serial.println((uint8_t)in);
 
-    // If the input byte is the start byte, reset the buffer
+    // If the input byte is the start byte, and we havent already received the start byte, reset the buffer and store the first byte
     if(in == _start && started == false)
     {
       index = 0;
       _buffer[index] = (uint8_t) in;
+
+      Serial.print("Index: ");
       Serial.print(index);
       Serial.print(" Start: ");
       Serial.println((uint8_t)_buffer[index]);
+
       started = true;
       ended = false;
     }
-
     // If the input byte is the end byte, end the bufer
     else if(in == _end)
     {
       _buffer[index] = in;
+
+      Serial.print("Index: ");
       Serial.print(index);
       Serial.print(" End: ");
       Serial.println((uint8_t)_buffer[index]);
+
       ended = true;
     }
-    // If the byte is between start and end
+    // If the byte is between start and end, increment the index and add it to the buffer
     else if(started == true)
     {
       if(index < (buffersize - 1))
       {
         _buffer[++index] = in;
+
+        Serial.print("Index: ");
         Serial.print(index);
         Serial.print(" Else: ");
         Serial.println((uint8_t)_buffer[index]);
       }
     }
 
+    // If we have hit both the start and end bytes, message is fully recevied
     if(started && ended){
+      // Buffer is full
       bufferFilled = true;
 
+      // Reset flags and index and fail counter
       started = false;
       ended = false;
       index = 0;
@@ -129,6 +147,7 @@ void Groundstation::updateSystem()
       Serial.println("Bluetooth message read");
     }
     else{
+      // Number of fails should not exceed size of message. If it does, then we have a problem
       fails++;
     }
   }
@@ -140,6 +159,7 @@ void Groundstation::updateSystem()
       ledRadio->turnOn();
       Serial.println("Sending..."); delay(10);
 
+      // Printing buffer for debugging
       for(int i = 0; i < sizeof(_buffer); ++i)
       {
         Serial.print(" ");
@@ -170,7 +190,10 @@ void Groundstation::updateSystem()
               Serial.println(rf95->lastRssi(), DEC); 
               ledRadio->turnOff();
 
+              // Send response to tablet over bluetooth
               Serial4.write((char*)buf);
+
+              // TODO: RESET LOCAL BUFFER TO EMPTY SO WE KEEP GETTING TELEMETRY MESSAGES BUT DO NOT SEND COMMANDS TWICE
               ledBluetooth->turnOff();
           }
           else
