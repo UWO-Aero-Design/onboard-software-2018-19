@@ -22,8 +22,8 @@ private:
   IMU_MPU6050* imu;
   Barometer* baro;
   GPS* gps;
-
   SDCardWriter* sd;
+  ServoBoard* sb;
 
   // Radio object
   RH_RF95 *rf95;
@@ -50,6 +50,12 @@ private:
   // Returns true if message was for this specific radio address
   // Returns false if message was not for this specific radio address
   bool processIncomingPacket(msg::ground_to_board_msg_t* packet);
+
+
+  bool openDoors();
+  bool closeDoors();
+  bool dropPayload();
+  bool dropGlider();
 	
 protected:
 public:

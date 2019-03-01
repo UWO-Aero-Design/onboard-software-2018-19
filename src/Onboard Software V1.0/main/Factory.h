@@ -15,7 +15,9 @@
 #include "IMU_MPU6050.h"
 #include "Barometer.h"
 #include "GPS_NEO6.h"
+#include "GPS.h"
 #include "SDCardWriter_Teensy.h"
+#include "ServoBoard.h"
 
 class Factory{
   private:
@@ -23,6 +25,7 @@ class Factory{
     static uint8_t baroInstances;
     static uint8_t GPSInstances;
     static uint8_t SDInstances;
+    static uint8_t SBInstances;
   protected:
   public:
   	Factory();
@@ -32,12 +35,14 @@ class Factory{
     GPS* selectGPS(uint8_t gps);
     SDCardWriter* selectSD(uint8_t sd);
     LED* selectLED(uint8_t ledPin);
+    ServoBoard* selectSB(uint8_t sb);
   
    	// Return the number of test objects that have been created. 
   	uint8_t getIMUInstances();
     uint8_t getBaroInstances();
     uint8_t getGPSInstances();
     uint8_t getSDInstances();
+    uint8_t getSBInstances();
   	uint8_t   selectTest(uint8_t model);
 };
 

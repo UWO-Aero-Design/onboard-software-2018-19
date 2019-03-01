@@ -10,6 +10,7 @@ uint8_t Factory::IMUInstances = 0;
 uint8_t Factory::baroInstances = 0;
 uint8_t Factory::GPSInstances = 0;
 uint8_t Factory::SDInstances = 0;
+uint8_t Factory::SBInstances = 0;
 
 // Default constructor
 Factory::Factory(){}
@@ -33,7 +34,10 @@ uint8_t Factory::getSDInstances() {
   return GPSInstances;
 }
 
-// Test method for checking if the factory works and compiles
+uint8_t Factory::getSBInstances() {
+  return GPSInstances;
+}
+
 IMU_MPU6050* Factory::selectIMU(uint8_t imu) {
 	// Returned object
 	IMU_MPU6050* object;
@@ -44,7 +48,7 @@ IMU_MPU6050* Factory::selectIMU(uint8_t imu) {
 		default:
 		{
 			object = new IMU_MPU6050();
-      		++IMUInstances;
+      ++IMUInstances;
 			break;
 		}
 	}
@@ -62,7 +66,7 @@ Barometer* Factory::selectBaro(uint8_t baro) {
     default:
     {
       object = new Barometer();
-          ++baroInstances;
+      ++baroInstances;
       break;
     }
   }
@@ -79,7 +83,7 @@ GPS* Factory::selectGPS(uint8_t gps) {
     default:
     {
       object = new GPS_NEO6();
-          ++GPSInstances;
+      ++GPSInstances;
       break;
     }
   }
@@ -96,7 +100,24 @@ SDCardWriter* Factory::selectSD(uint8_t sd) {
     default:
     {
       object = new SDCardWriter_Teensy();
-          ++SDInstances;
+      ++SDInstances;
+      break;
+    }
+  }
+  return object;
+}
+
+ServoBoard* Factory::selectSB(uint8_t sb) {
+  // Returned object
+  ServoBoard* object;
+
+  // Checking what model to create
+  switch(sb)
+  {
+    default:
+    {
+      object = new ServoBoard();
+      ++SBInstances;
       break;
     }
   }

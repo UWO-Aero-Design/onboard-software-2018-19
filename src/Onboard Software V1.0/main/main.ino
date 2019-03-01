@@ -44,7 +44,7 @@ void systemSelect(uint8_t systemType){
 		{
 			g_system = new Groundstation();
 		} break;
-    	case ONBOARD:
+    case ONBOARD:
     	{
       		g_system = new OnboardSystem();
     	} break;

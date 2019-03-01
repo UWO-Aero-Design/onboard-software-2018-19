@@ -27,9 +27,12 @@ OnboardSystem::OnboardSystem()
 
 // Clean up objects
 OnboardSystem::~OnboardSystem(){
-	//delete imu;
-  //delete baro;
-  //delete gps;
+	delete imu;
+  delete baro;
+  delete gps;
+  delete sd;
+
+  delete sb;
 
   delete rf95;
 
@@ -43,8 +46,9 @@ void OnboardSystem::initSystem()
   // Create sensor objects
   imu = factory->selectIMU(0);
   baro = factory->selectBaro(0);
-  //gps = factory->selectGPS(0);
-  // sd = factory->selectSD(0);
+  gps = factory->selectGPS(0);
+  sd = factory->selectSD(0);
+  sb = factory->selectSB(0);
 
   // Create radio object
   rf95 = new RH_RF95(radio::RFM95_CS, radio::RFM95_INT);
@@ -85,18 +89,19 @@ void OnboardSystem::initSystem()
   ledLoop = new LED(LEDPIN::GREEN_LED,0,0,0);
   
   // Initialize IMU objects
-  //imu->init(-3675, -1303, 611, 73, 50, 14);
-  //baro->init();
-  //gps->init();
-  //sd->init();
+  imu->init(-3675, -1303, 611, 73, 50, 14);
+  baro->init();
+  gps->init();
+  sd->init();
+  sb->init(8, 16);
 }
 
 void OnboardSystem::updateSystem()
 {
   // Update sensors
-  //imu->update();
-  //baro->update();
-  //gps->update();
+  imu->update();
+  baro->update();
+  gps->update();
 
   // If the radio is available aka something has been sent to us
   if (rf95->available())
@@ -259,4 +264,25 @@ bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
 
   // Remove this line after debugging and uncomment return false in else statement
   return true;
+}
+
+
+bool OnboardSystem::openDoors() {
+  sb->runServo(0, 0);
+  return sb->isError();
+}
+
+bool OnboardSystem::closeDoors() {
+  sb->runServo(0, 0);
+  return sb->isError();
+}
+
+bool OnboardSystem::dropPayload() {
+  sb->runServo(0, 0);
+  return sb->isError();
+}
+
+bool OnboardSystem::dropGlider() {
+  sb->runServo(0, 0);
+  return sb->isError();
 }
