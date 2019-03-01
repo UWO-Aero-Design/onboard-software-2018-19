@@ -28,8 +28,8 @@ class Factory{
   	Factory();
   	~Factory();
     IMU_MPU6050* selectIMU(uint8_t imu);
-    //Barometer* selectBaro(uint8_t imu);
-    //GPS* selectGPS(uint8_t gps);
+    Barometer* selectBaro(uint8_t imu);
+    GPS* selectGPS(uint8_t gps);
     SDCardWriter* selectSD(uint8_t sd);
     LED* selectLED(uint8_t ledPin);
   

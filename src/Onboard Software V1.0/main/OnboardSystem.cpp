@@ -41,8 +41,8 @@ OnboardSystem::~OnboardSystem(){
 void OnboardSystem::initSystem()
 {
   // Create sensor objects
-  //imu = factory->selectIMU(0);
-  //baro = factory->selectBaro(0);
+  imu = factory->selectIMU(0);
+  baro = factory->selectBaro(0);
   //gps = factory->selectGPS(0);
   // sd = factory->selectSD(0);
 
