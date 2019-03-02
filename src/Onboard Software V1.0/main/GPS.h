@@ -21,6 +21,7 @@ class GPS{
     virtual double getLat() = 0;
     virtual double getLon() = 0;
     virtual double getAlt() = 0;
+    virtual double getSpeed() = 0;
     virtual uint32_t getSatellites() = 0;
 };
 

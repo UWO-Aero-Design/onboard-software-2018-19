@@ -6,6 +6,7 @@
 #include "SPI.h"
 #include "RH_RF95.h"
 #include "System.h"
+
 #include "Config.h"
 
 const uint8_t buffersize = sizeof(msg::ground_to_board_msg_t);

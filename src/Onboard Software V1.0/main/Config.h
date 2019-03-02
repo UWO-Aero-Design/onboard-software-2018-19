@@ -21,6 +21,12 @@ namespace radio
     const uint8_t RFM95_TX_POWER  = 23;
 }
 
+// namespace errors
+// {
+//     uint8_t errRec  = 1;
+//     uint8_t errReq  = 2;
+// }
+
 // TODO(Carl Baron: Jan 10th, 2019): Global project namespaces, specific one for message
 namespace msg{
 
@@ -158,7 +164,7 @@ namespace msg{
 }
 
 namespace config{
-    typedef enum {sysPlane, sysGndStation, sysGlider1, sysGlider2} systems_t;
+    typedef enum {sysPlane, sysGndStation, sysGlider1, sysGlider2, sysDebug} systems_t;
 
     // TODO set this system type based on which system we are
     const systems_t thisSystem = sysPlane;

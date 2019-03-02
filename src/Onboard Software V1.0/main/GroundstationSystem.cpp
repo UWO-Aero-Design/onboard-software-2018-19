@@ -1,6 +1,7 @@
 #include "SoftwareSerial.h"
 #include "GroundstationSystem.h"
 // #include "Message.h"
+#include "BitManipulation.h"
 
 #include "SPI.h"
 #include "RH_RF95.h"
@@ -76,6 +77,10 @@ void Groundstation::initSystem()
   
   // Set power to maximum
   rf95->setTxPower(radio::RFM95_TX_POWER, false);
+
+  ledBluetooth->startBlinking(5000,1000,50);
+  ledLoop->startBlinking(5000,1000,50);
+  delay(5000);
 
 }
 
@@ -185,10 +190,21 @@ void Groundstation::updateSystem()
           if (rf95->recv(buf, &len))
           {
               Serial.print("Got reply: ");
-              Serial.println((char*)buf);
-              Serial.print("RSSI: ");
-              Serial.println(rf95->lastRssi(), DEC); 
-              ledRadio->turnOff();
+//              Serial.println((char*)buf);
+//              Serial.print("RSSI: ");
+//              Serial.println(rf95->lastRssi(), DEC); 
+//              ledRadio->turnOff();
+
+//              // Printing buffer for debugging
+//              for(int i = 0; i < sizeof(msg::board_to_ground_msg_t); ++i)
+//              {
+//                Serial.print(" ");
+//                Serial.print((uint8_t)buf[i]);
+//              }
+
+              msg::board_to_ground_msg_t* incoming_packet = (msg::board_to_ground_msg_t *) buf;
+              Serial.println(incoming_packet->lat);
+              Serial.println(bit::swapINT32(incoming_packet->lat));
 
               // Send response to tablet over bluetooth
               Serial4.write((char*)buf);

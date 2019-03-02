@@ -4,7 +4,8 @@
 //#include "TestSystem.h"
 //#include "LEDTestSystem.h"
 #include "GroundstationSystem.h"
-#include "OnboardSystem.h"
+//#include "OnboardSystem.h"
+
 
 #define TEST 1
 #define LED_TEST 2
@@ -20,7 +21,7 @@ uint8_t g_systemType;
 void setup(){
 	Serial.begin(9600);
   
- 	systemSelect(ONBOARD);
+ 	systemSelect(GROUNDSTATION);
   
     g_system->initSystem();
 }
@@ -46,7 +47,7 @@ void systemSelect(uint8_t systemType){
 		} break;
     case ONBOARD:
     	{
-      		g_system = new OnboardSystem();
+      		//g_system = new OnboardSystem();
     	} break;
 		default:
 		{
