@@ -169,7 +169,7 @@ void OnboardSystem::updateSystem()
   ledLoop->turnOff();
 }
 
-bool OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet) 
+uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet) 
 {
 
   Serial.println("Processing commands");

@@ -3,8 +3,8 @@
 
 //#include "TestSystem.h"
 //#include "LEDTestSystem.h"
-#include "GroundstationSystem.h"
-//#include "OnboardSystem.h"
+//#include "GroundstationSystem.h"
+#include "OnboardSystem.h"
 
 
 #define TEST 1
@@ -21,7 +21,7 @@ uint8_t g_systemType;
 void setup(){
   Serial.begin(9600);
   
-  systemSelect(GROUNDSTATION);
+  systemSelect(ONBOARD);
   
     g_system->initSystem();
 }
@@ -36,12 +36,12 @@ void systemSelect(uint8_t systemType){
     case GROUNDSTATION:
     {
       Serial.println("Building groundstation object ... ");
-      g_system = new Groundstation();
+      //g_system = new Groundstation();
     } break;
     case ONBOARD:
     {
       Serial.println("Building onboard object ... ");
-      //g_system = new OnboardSystem();
+      g_system = new OnboardSystem();
     } break;
     default:
     {
