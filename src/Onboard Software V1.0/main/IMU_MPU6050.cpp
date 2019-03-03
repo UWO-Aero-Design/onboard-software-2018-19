@@ -118,7 +118,7 @@ void IMU_MPU6050::update() {
     if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
-        Serial.println(F("FIFO overflow!"));
+        //Serial.println(F("FIFO overflow!"));
 
     // otherwise, check for DMP data ready interrupt (this should happen frequently)
     } else {        // Commented out by 109jb -->  if (mpuIntStatus & 0x02) {

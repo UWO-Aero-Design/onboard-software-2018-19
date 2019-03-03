@@ -13,11 +13,11 @@
 #include "BitManipulation.h"
 
 // temp
-#define CAL_IMU 0
-#define CAL_GPS 1
-#define CAL_BARO 2
-#define PAYLOAD_DROP 0
-#define GLIDER_DROP 1
+#define CAL_IMU 1
+#define CAL_GPS 2
+#define CAL_BARO 3
+#define PAYLOAD_DROP 1
+#define GLIDER_DROP 2
 
 // Only build factory on startup
 OnboardSystem::OnboardSystem()
@@ -196,10 +196,12 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
   packet->motor1 = bit::swapUINT16(packet->motor15);
   packet->motor1 = bit::swapUINT16(packet->motor16);
   packet->error = bit::swapUINT16(packet->error);
-    
+  Serial.print("Message: ");
+    Serial.println(packet->msgType);
   // Check if it is for us. If it is for us, parse appropriately 
   if(packet->msgType == static_cast<uint16_t>(config::sysPlane))
   {
+    Serial.println("Message");
     // Storing target lat and target lon
     targetLat = packet->targetLat/1000000;
     targetLon = packet->targetLon/1000000;
@@ -238,6 +240,8 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
     {
       case GLIDER_DROP:
       {
+        Serial.println("Glider Drop");
+        openDoors();
         // GLIDER DROP LOGIC with motor controller
         //gliderDropLat = gps.getLat();
         //gliderDropLon = gps.getLon();
@@ -245,6 +249,8 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
 
       case PAYLOAD_DROP:
       {
+        Serial.println("Payload Drop");
+        closeDoors();
         // PAYLOAD DROP LOGIC with motor controller
         //payloadDropLat = gps.getLat();
         //payloadDropLon = gps.getLon();
@@ -268,12 +274,12 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
 
 
 bool OnboardSystem::openDoors() {
-  sb->runServo(8, 180);
+  sb->runServo(8, 300);
   return sb->isError();
 }
 
 bool OnboardSystem::closeDoors() {
-  sb->runServo(8, 0);
+  sb->runServo(8, 200);
   return sb->isError();
 }
 

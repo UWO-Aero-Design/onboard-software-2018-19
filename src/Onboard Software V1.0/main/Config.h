@@ -164,7 +164,7 @@ namespace msg{
 }
 
 namespace config{
-    typedef enum {sysPlane, sysGndStation, sysGlider1, sysGlider2, sysDebug} systems_t;
+    typedef enum {sysGndStation, sysPlane, sysGlider1, sysGlider2, sysDebug} systems_t;
 
     // TODO set this system type based on which system we are
     const systems_t thisSystem = sysPlane;
