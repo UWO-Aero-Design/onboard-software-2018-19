@@ -3,8 +3,13 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-#define SERVOMIN  115 // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  500 // this is the 'maximum' pulse length count (out of 4096)
+// blue servo
+//#define SERVOMIN  135 // this is the 'minimum' pulse length count (out of 4096)
+//#define SERVOMAX  490 // this is the 'maximum' pulse length count (out of 4096)
+
+// black servo
+#define SERVOMIN  176 // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  441 // this is the 'maximum' pulse length count (out of 4096)
 
 void setup() {
   // put your setup code here, to run once:
@@ -15,7 +20,7 @@ pwm.setPWMFreq(50);
 delay(10);
 }
 
-const int SERVOMINCHANNEL = 8, SERVOMAXCHANNEL = 15;
+const int SERVOMINCHANNEL = 0, SERVOMAXCHANNEL = 15;
 int channel = 0, deg = 0, pulse = 0;
 bool stringComplete = false, runServo = false, printmsg = true;
 
