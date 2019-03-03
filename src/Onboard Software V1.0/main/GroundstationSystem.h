@@ -15,6 +15,7 @@ class Groundstation : public System{
 private:
   // Radio object
   RH_RF95 *rf95;
+  uint16_t RADIO_MSG_RATE_MS = 1000;
   uint16_t RADIO_MSG_RATE_MS = 500;
 
   // Led objects
@@ -35,7 +36,6 @@ private:
   bool ended;
   uint8_t index;
 
-  // Private functions
   void printPlaneBuffer(char* buf);
 
 protected:
