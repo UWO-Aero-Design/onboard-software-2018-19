@@ -12,18 +12,18 @@ GPS_NEO6::~GPS_NEO6() {}
 TinyGPSPlus tgps2;
 
 void GPS_NEO6::init(){
-  Serial.begin(9800);
+  Serial4.begin(9600);
 }
 
 void GPS_NEO6::update(){
 
   //insure data is current
-  if (Serial.available() > 100){
-    Serial.flush();
+  if (Serial4.available() > 100){
+    Serial4.flush();
   }
 
-  while(Serial.available()>0){
-    tgps2.encode(Serial.read());
+  while(Serial4.available()>0){
+    tgps2.encode(Serial4.read());
     if (tgps2.location.isUpdated()){
       lat = (tgps2.location.lat());
       lon = (tgps2.location.lng());
