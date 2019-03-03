@@ -115,7 +115,7 @@ void Groundstation::updateSystem()
     // If the input byte is the end byte, end the bufer
     else if(in == _end)
     {
-      _buffer[index] = in;
+      _buffer[++index] = in;
 
       Serial.print("Index: ");
       Serial.print(index);
@@ -190,24 +190,26 @@ void Groundstation::updateSystem()
           if (rf95->recv(buf, &len))
           {
               Serial.print("Got reply: ");
-//              Serial.println((char*)buf);
-//              Serial.print("RSSI: ");
-//              Serial.println(rf95->lastRssi(), DEC); 
-//              ledRadio->turnOff();
-
-//              // Printing buffer for debugging
-//              for(int i = 0; i < sizeof(msg::board_to_ground_msg_t); ++i)
-//              {
-//                Serial.print(" ");
-//                Serial.print((uint8_t)buf[i]);
-//              }
+              printPlaneBuffer((char *)buf);
+              ledRadio->turnOff();
 
               msg::board_to_ground_msg_t* incoming_packet = (msg::board_to_ground_msg_t *) buf;
               Serial.println(incoming_packet->lat);
-              Serial.println(bit::swapINT32(incoming_packet->lat));
+              // Serial.println(bit::swapINT32(incoming_packet->lat)); NO NEED TO SWAP
+
+              // // Prepare packet to be sent
+              // uint8_t data[sizeof(incoming_packet)];
+              // memcpy(data, incoming_packet, sizeof(incoming_packet));
 
               // Send response to tablet over bluetooth
-              Serial4.write((char*)buf);
+              for(int i = 0; i < sizeof(msg::board_to_ground_msg_t); ++i)
+              {
+                Serial4.write((char)buf[i]);
+              }
+
+
+              Serial.println("Printing sent data ...");
+              printPlaneBuffer((char*)buf);
 
               // TODO: RESET LOCAL BUFFER TO EMPTY SO WE KEEP GETTING TELEMETRY MESSAGES BUT DO NOT SEND COMMANDS TWICE
               ledBluetooth->turnOff();
@@ -226,5 +228,16 @@ void Groundstation::updateSystem()
       delay(RADIO_MSG_RATE_MS);
       ledLoop->turnOff();
 
+  }
+}
+
+void Groundstation::printPlaneBuffer(char* buf)
+{
+  // Printing buffer for debugging
+  Serial.println("Printing message from plane as buffer...");
+  for(int i = 0; i < sizeof(msg::board_to_ground_msg_t); ++i)
+  {
+      Serial.print(" ");
+      Serial.print((uint8_t)buf[i]);
   }
 }

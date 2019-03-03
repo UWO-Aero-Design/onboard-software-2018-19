@@ -143,6 +143,7 @@
 //      Serial.println(rf95->lastRssi(), DEC);
 //
 //      // Handle request
+		// Move incoming packet to class variable 
 //      msg::ground_to_board_msg_t* incoming_packet = (msg::ground_to_board_msg_t *) buf;
 //      uint8_t responseCode = processIncomingPacket(incoming_packet);
 //

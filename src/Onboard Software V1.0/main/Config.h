@@ -136,25 +136,25 @@ namespace msg{
 
 
 	typedef struct {
-		uint8_t msgStart;
-		uint16_t msgType;
-        int32_t lat;
-        int32_t lon;
-        int16_t yaw;
-        int16_t pitch;
-        int16_t roll;
-        uint16_t speed;
-        uint16_t alt;
-        int16_t pidYaw;
-        int16_t pidPitch;
-        int16_t pidRoll;
-        int32_t gDropLat;
-        int32_t gDropLon;
-        int32_t pDropLat;
-        int32_t pDropLon;
-        int8_t rssi;
-        uint16_t error;
-        uint8_t msgEnd;
+		uint8_t msgStart;  
+		uint16_t msgType; 
+        int32_t lat; 
+        int32_t lon;  
+        int16_t yaw; 
+        int16_t pitch;  
+        int16_t roll; 
+        uint16_t speed; 
+        uint16_t alt; 
+        int16_t pidYaw; 
+        int16_t pidPitch; 
+        int16_t pidRoll; 
+        int32_t gDropLat; 
+        int32_t gDropLon; 
+        int32_t pDropLat; 
+        int32_t pDropLon; 
+        int8_t rssi;  
+        uint16_t error;  
+        uint8_t msgEnd; 
     } __attribute__((__packed__)) board_to_ground_msg_t;
 
 

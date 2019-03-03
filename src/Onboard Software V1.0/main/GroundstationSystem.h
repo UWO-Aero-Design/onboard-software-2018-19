@@ -36,6 +36,8 @@ private:
   bool ended;
   uint8_t index;
 
+  void printPlaneBuffer(char* buf);
+
 protected:
 public:
   Groundstation();

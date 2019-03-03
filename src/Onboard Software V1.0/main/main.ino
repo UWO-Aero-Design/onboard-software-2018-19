@@ -19,39 +19,34 @@ System *g_system;
 uint8_t g_systemType;  
 
 void setup(){
-	Serial.begin(9600);
+  Serial.begin(9600);
   
- 	systemSelect(GROUNDSTATION);
+  systemSelect(GROUNDSTATION);
   
     g_system->initSystem();
 }
 
 void loop(){
-	g_system->updateSystem();
+  g_system->updateSystem();
 }
 
 void systemSelect(uint8_t systemType){
-	switch(systemType){
-		// case TEST:
-		// 	g_system = new TestSystem();
-		// 	break;
-		// case LED_TEST:
-		// 	g_system = new LEDTestSystem();
-		// 	break;
-		// case BLUETOOTH_TEST:
-		// 	g_system = new HC05TestSystem();
-		// 	break;
-		case GROUNDSTATION:
-		{
-			g_system = new Groundstation();
-		} break;
+  switch(systemType)
+  {
+    case GROUNDSTATION:
+    {
+      Serial.println("Building groundstation object ... ");
+      g_system = new Groundstation();
+    } break;
     case ONBOARD:
-    	{
-      		//g_system = new OnboardSystem();
-    	} break;
-		default:
-		{
-			// default
-		} break;
-	}
+    {
+      Serial.println("Building onboard object ... ");
+      //g_system = new OnboardSystem();
+    } break;
+    default:
+    {
+      Serial.println("Building nothing ... ");
+      // default
+    } break;
+  }
 }
