@@ -56,6 +56,10 @@ private:
   // Generates test packet
   void generateTestPacket();
   void generateRealPacket();
+  void printPacket();
+
+  bool sendPDrop = false;
+  bool sendGDrop = false;
 
   bool openDoors();
   bool closeDoors();

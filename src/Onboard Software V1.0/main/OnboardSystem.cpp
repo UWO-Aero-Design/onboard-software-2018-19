@@ -38,6 +38,7 @@ OnboardSystem::~OnboardSystem(){
 
   delete ledRadio;
   delete ledLoop;
+  delete ledError;
 }
 
 // Init system
@@ -58,7 +59,7 @@ void OnboardSystem::initSystem()
   digitalWrite(radio::RFM95_RST, HIGH);
 
   // Init serial
-  while (!Serial);
+  //while (!Serial);
   Serial.begin(9600);
   delay(100);
 
@@ -87,6 +88,7 @@ void OnboardSystem::initSystem()
   // Init led pins
   ledRadio = new LED(LEDPIN::BLUE_LED,0,0,0);
   ledLoop = new LED(LEDPIN::GREEN_LED,0,0,0);
+  ledError = new LED(LEDPIN::RED_LED,0,0,0);
   
   // Initialize IMU objects
   imu->init(-3675, -1303, 611, 73, 50, 14);
@@ -94,6 +96,20 @@ void OnboardSystem::initSystem()
   gps->init();
   sd->init();
   sb->init(8, 16);
+
+  ledRadio->startBlinking(5000, 1000, 50);
+  ledError->startBlinking(5000, 1000, 50);
+  Serial.print("Ready");
+  delay(1000);
+  Serial.print(".");
+  delay(1000);
+  Serial.print(".");
+  delay(1000);
+  Serial.print(".");
+  delay(1000);
+  Serial.print(".");
+  delay(1000);
+  Serial.println(".\n");
 }
 
 void OnboardSystem::updateSystem()
@@ -118,10 +134,10 @@ void OnboardSystem::updateSystem()
       
 
       // Debuggging
-       RH_RF95::printBuffer("Received: ", buf, len);
-       Serial.print("Got: ");
-       Serial.println((char*)buf);
-       Serial.print("Received message with RSSI: ");
+      RH_RF95::printBuffer("Received: ", buf, len);
+      Serial.print("Got: ");
+      Serial.println((char*)buf);
+      Serial.print("Received message with RSSI: ");
       Serial.println(rf95->lastRssi(), DEC);
 
       // Handle request
@@ -139,11 +155,14 @@ void OnboardSystem::updateSystem()
         //                                      msg::endByte};
 
         // Default packet for debugging
-        msg::board_to_ground_msg_t outgoing_packet = {msg::startByte, 
-                                             0, 0, 0, 0, 0, 
-                                             0, 0, 0, 0, 0, 0, 
-                                             0, 0, 0, 0, 0, 0, 
-                                             msg::endByte};
+//        outgoing_packet = {msg::startByte, 
+//                                             0, (int32_t)(gps->getLat()*10000000), (int32_t)(gps->getLon()*10000000), imu->getYaw(), 0, 
+//                                             0, 0, 0, 0, 0, 0, 
+//                                             0, 0, 0, 0, 0, 0, 
+//                                             msg::endByte};
+
+        generateRealPacket();
+        //printPacket();
         
         // Prepare packet to be sent
         uint8_t data[sizeof(outgoing_packet)];
@@ -154,7 +173,7 @@ void OnboardSystem::updateSystem()
 
         // Turn on send led and wait for packet to send
         rf95->waitPacketSent();
-        Serial.println("Sent a reply");
+        //Serial.println("Sent a reply");
         ledRadio->turnOff();
       }
     }
@@ -172,7 +191,7 @@ void OnboardSystem::updateSystem()
 uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet) 
 {
 
-  Serial.println("Processing commands");
+  //Serial.println("Processing commands");
 
   // Enter logic processing down here ...
   // Step 1. Swap order of bits because of struct packing for values greater than 8 bits
@@ -180,28 +199,25 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
   packet->targetLat = bit::swapINT32(packet->targetLat);
   packet->targetLon = bit::swapINT32(packet->targetLon);
   packet->motor1 = bit::swapUINT16(packet->motor1);
-  packet->motor1 = bit::swapUINT16(packet->motor2);
-  packet->motor1 = bit::swapUINT16(packet->motor3);
-  packet->motor1 = bit::swapUINT16(packet->motor4);
-  packet->motor1 = bit::swapUINT16(packet->motor5);
-  packet->motor1 = bit::swapUINT16(packet->motor6);
-  packet->motor1 = bit::swapUINT16(packet->motor7);
-  packet->motor1 = bit::swapUINT16(packet->motor8);
-  packet->motor1 = bit::swapUINT16(packet->motor9);
-  packet->motor1 = bit::swapUINT16(packet->motor10);
-  packet->motor1 = bit::swapUINT16(packet->motor11);
-  packet->motor1 = bit::swapUINT16(packet->motor12);
-  packet->motor1 = bit::swapUINT16(packet->motor13);
-  packet->motor1 = bit::swapUINT16(packet->motor14);
-  packet->motor1 = bit::swapUINT16(packet->motor15);
-  packet->motor1 = bit::swapUINT16(packet->motor16);
+  packet->motor2 = bit::swapUINT16(packet->motor2);
+  packet->motor3 = bit::swapUINT16(packet->motor3);
+  packet->motor4 = bit::swapUINT16(packet->motor4);
+  packet->motor5 = bit::swapUINT16(packet->motor5);
+  packet->motor6 = bit::swapUINT16(packet->motor6);
+  packet->motor7 = bit::swapUINT16(packet->motor7);
+  packet->motor8 = bit::swapUINT16(packet->motor8);
+  packet->motor9 = bit::swapUINT16(packet->motor9);
+  packet->motor10 = bit::swapUINT16(packet->motor10);
+  packet->motor11 = bit::swapUINT16(packet->motor11);
+  packet->motor12 = bit::swapUINT16(packet->motor12);
+  packet->motor13 = bit::swapUINT16(packet->motor13);
+  packet->motor14 = bit::swapUINT16(packet->motor14);
+  packet->motor15 = bit::swapUINT16(packet->motor15);
+  packet->motor16 = bit::swapUINT16(packet->motor16);
   packet->error = bit::swapUINT16(packet->error);
-  Serial.print("Message: ");
-    Serial.println(packet->msgType);
   // Check if it is for us. If it is for us, parse appropriately 
   if(packet->msgType == static_cast<uint16_t>(config::sysPlane))
   {
-    Serial.println("Message");
     // Storing target lat and target lon
     targetLat = packet->targetLat/1000000;
     targetLon = packet->targetLon/1000000;
@@ -223,6 +239,7 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
 
       case CAL_BARO:
       {
+        baro->zero(baro->getSeaLevelPressure());
         // CALIBRATE BARO LOGIC
         Serial.println("Calibrating Barometer...");
       }break;
@@ -241,6 +258,9 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
       case GLIDER_DROP:
       {
         Serial.println("Glider Drop");
+        sendGDrop = true;
+        outgoing_packet.gDropLat = gps->getLat()*1000000;
+        outgoing_packet.gDropLon = gps->getLon()*1000000;
         openDoors();
         // GLIDER DROP LOGIC with motor controller
         //gliderDropLat = gps.getLat();
@@ -250,6 +270,9 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
       case PAYLOAD_DROP:
       {
         Serial.println("Payload Drop");
+        sendPDrop = true;
+        outgoing_packet.pDropLat = gps->getLat()*1000000;
+        outgoing_packet.pDropLon = gps->getLon()*1000000;
         closeDoors();
         // PAYLOAD DROP LOGIC with motor controller
         //payloadDropLat = gps.getLat();
@@ -260,6 +283,44 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
       {
         // NOTHING
       }break;
+    }
+
+    // motor request
+    if(packet->motor1 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor1 == 2) {
+      sb->runServo(8, 440);
+    }
+    if(packet->motor2 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor2 == 2) {
+      sb->runServo(8, 440);
+    }
+    if(packet->motor3 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor3 == 2) {
+      sb->runServo(8, 440);
+    }
+    if(packet->motor4 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor4 == 2) {
+      sb->runServo(8, 440);
+    }
+    if(packet->motor5 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor5 == 2) {
+      sb->runServo(8, 440);
+    }
+    if(packet->motor6 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor6 == 2) {
+      sb->runServo(8, 440);
     }
   }
   else
@@ -272,14 +333,125 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
   return true;
 }
 
+void OnboardSystem::generateTestPacket(void)
+{
+   // Test packet 
+ outgoing_packet.msgStart = msg::startByte;
+ outgoing_packet.msgType = config::sysDebug;
+ outgoing_packet.lat += 100;
+ outgoing_packet.lon -= 100;
+ outgoing_packet.yaw = 0;
+ outgoing_packet.pitch = 100;
+ outgoing_packet.roll = -100;
+
+ outgoing_packet.speed = 2000;
+ outgoing_packet.alt = 10000;
+
+ outgoing_packet.pidYaw = -10;
+ outgoing_packet.pidPitch = 0;
+ outgoing_packet.pidRoll = 10;
+
+ outgoing_packet.gDropLat = 430110059; 
+ outgoing_packet.gDropLon = -812767429;
+
+ outgoing_packet.pDropLat = 435110059; 
+ outgoing_packet.pDropLon = -817767429;
+
+ outgoing_packet.rssi = rf95->lastRssi();
+ outgoing_packet.error = 20;
+
+ outgoing_packet.msgEnd =  msg::endByte;
+}
+
+void OnboardSystem::generateRealPacket()
+{
+ // Generate real packet
+ // Start byte
+ outgoing_packet.msgStart = msg::startByte;
+
+ // Message meant for ground station
+ outgoing_packet.msgType = 0;
+
+ // Send back current latitude and longitude 
+ outgoing_packet.lat = (gps->getLat()) * 1000000;
+ outgoing_packet.lon = (gps->getLon()) * 1000000;
+
+ if(sendGDrop) sendGDrop = false;
+ else {
+  outgoing_packet.gDropLat = 0;
+  outgoing_packet.gDropLon = 0;
+ }
+ if(sendPDrop) sendPDrop = false;
+ else {
+  outgoing_packet.pDropLat = 0;
+  outgoing_packet.pDropLon = 0;
+ }
+
+ // Send back current yaw, pitch, roll
+ outgoing_packet.yaw = imu->getYaw() * 100;
+ outgoing_packet.pitch = imu->getPitch() * 100;
+ outgoing_packet.roll = imu->getRoll() * 100;
+
+ // Send back speed, altitude
+ outgoing_packet.speed = gps->getSpeed();
+ outgoing_packet.alt = gps->getAlt();
+
+ // Send back RSSI
+ outgoing_packet.rssi = rf95->lastRssi();
+
+ // End byte
+ outgoing_packet.msgEnd =  msg::endByte;
+
+
+ /* THE REST OF THE BYTES ARE SENT ASYNCHRONOUSLY, MEANING ONLY WHEN THEY ARE REQUESTED */
+}
+
+void OnboardSystem::printPacket()
+{
+ Serial.print("Message Type: ");
+ Serial.println(outgoing_packet.msgType);
+ 
+ Serial.print("Lat: ");
+ Serial.println((double)outgoing_packet.lat / 10000000);
+ Serial.print("Lon: ");
+ Serial.println((double)outgoing_packet.lon / 10000000);
+ 
+ Serial.print("Yaw: ");
+ Serial.println((double)outgoing_packet.yaw / 100);
+ Serial.print("Pitch: ");
+ Serial.println((double)outgoing_packet.pitch / 100);
+ Serial.print("Roll: ");
+ Serial.println((double)outgoing_packet.roll / 100);
+ 
+ Serial.print("Speed: ");
+ Serial.println(outgoing_packet.speed);
+ Serial.print("Alt: ");
+ Serial.println(outgoing_packet.alt);
+
+ Serial.print("gDropLat: ");
+ Serial.println((double)outgoing_packet.gDropLat / 10000000);
+ Serial.print("gDropLon: ");
+ Serial.println((double)outgoing_packet.gDropLon / 10000000);
+ Serial.print("pDropLat: ");
+ Serial.println((double)outgoing_packet.pDropLat / 10000000);
+ Serial.print("pDropLon: ");
+ Serial.println((double)outgoing_packet.pDropLon / 10000000);
+ 
+ Serial.print("rssi: ");
+ Serial.println(outgoing_packet.rssi);
+ 
+ Serial.print("error: ");
+ Serial.println(outgoing_packet.error);
+}
+
 
 bool OnboardSystem::openDoors() {
-  sb->runServo(8, 300);
+  sb->runServo(8, 440);
   return sb->isError();
 }
 
 bool OnboardSystem::closeDoors() {
-  sb->runServo(8, 200);
+  sb->runServo(8, 180);
   return sb->isError();
 }
 
