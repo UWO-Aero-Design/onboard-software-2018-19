@@ -58,9 +58,11 @@ private:
   void generateRealPacket();
   void printPacket();
 
+  // flag for sending the lon/lat only once
   bool sendPDrop = false;
   bool sendGDrop = false;
 
+  // motor/servo functions
   bool openDoors();
   bool closeDoors();
   bool dropPayload();

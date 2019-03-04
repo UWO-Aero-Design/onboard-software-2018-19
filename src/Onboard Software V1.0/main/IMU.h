@@ -1,6 +1,11 @@
 #ifndef IMU_h
 #define IMU_h
 
+/*
+ * File Purpose
+ *    Interface for the IMU sensor
+ */
+
 #if(ARDUINO >= 100)
   #include "Arduino.h"
 #else

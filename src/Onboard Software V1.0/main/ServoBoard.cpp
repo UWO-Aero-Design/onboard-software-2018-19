@@ -11,15 +11,17 @@ ServoBoard::~ServoBoard() { }
 
 void ServoBoard::init() {
   driver.begin();
-  driver.setPWMFreq(50);
+  driver.setPWMFreq(50); // set clock frequency
 }
 
+// init with number of channels - ie. 0 to 8
 void ServoBoard::init(int numChannels) {
   this->numChannels = numChannels;
   this->maxChannel = numChannels - 1;
   init();
 }
 
+// init with a min and max channel number - ie. 8 to 15
 void ServoBoard::init(int minChannel, int maxChannel) {
   this->numChannels = maxChannel - minChannel + 1;
   this->maxChannel = maxChannel;
@@ -27,6 +29,10 @@ void ServoBoard::init(int minChannel, int maxChannel) {
   init();
 }
 
+// checks if input is valid and runs the coresponding servo
+// gpIO:
+//        full on  - driver.setPWM(channel, 4096,   0 );
+//        full off - driver.setPWM(channel,   0 , 4096);
 void ServoBoard::runServo(int channel, int pulse) {
   if(channel > maxChannel || channel < minChannel) {
     error = true;

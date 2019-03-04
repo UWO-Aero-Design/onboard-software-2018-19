@@ -1,6 +1,11 @@
 #ifndef SDCardWriterTeensy_h
 #define SDCardWriterTeensy_h
 
+/*
+ * File Purpose
+ *    Implements the SDCardWriter class to work with Teensy's SD system
+ */
+
 #include "SDCardWriter.h"
 
 #if(ARDUINO >= 100)
@@ -15,18 +20,21 @@ class SDCardWriter_Teensy : public SDCardWriter{
     SDCardWriter_Teensy(String dirLoc, String filename, String fileHeader);
     ~SDCardWriter_Teensy();
     void init();
+    
     void write(String data);
     void setHeader(String header);
     void setFilename(String filename);
+
+    // error handling
     bool isError();
     String getErrorMessage();
 
   private:  
     void writeHeader();
-    String fileHeader;
-    String dirLoc;
-    String filename;
-    String errorMessage;
+    String fileHeader; // header for the file
+    String dirLoc; // location of the directory
+    String filename; // name of the file
+    String errorMessage; // any errors
 
 };
 

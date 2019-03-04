@@ -97,6 +97,7 @@ void OnboardSystem::initSystem()
   sd->init();
   sb->init(8, 16);
 
+  // startup lights and boot routine
   ledRadio->startBlinking(5000, 1000, 50);
   ledError->startBlinking(5000, 1000, 50);
   Serial.print("Ready");
@@ -406,6 +407,7 @@ void OnboardSystem::generateRealPacket()
  /* THE REST OF THE BYTES ARE SENT ASYNCHRONOUSLY, MEANING ONLY WHEN THEY ARE REQUESTED */
 }
 
+// print the outgoing packet
 void OnboardSystem::printPacket()
 {
  Serial.print("Message Type: ");
@@ -444,7 +446,7 @@ void OnboardSystem::printPacket()
  Serial.println(outgoing_packet.error);
 }
 
-
+// motor/servo functions
 bool OnboardSystem::openDoors() {
   sb->runServo(8, 440);
   return sb->isError();

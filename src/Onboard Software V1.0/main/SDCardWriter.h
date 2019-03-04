@@ -1,6 +1,11 @@
 #ifndef SDCardWriter_h
 #define SDCardWriter_h
 
+/*
+ * File Purpose
+ *    Interface for the SD Data Logging system
+ */
+
 #if(ARDUINO >= 100)
   #include "Arduino.h"
 #else
