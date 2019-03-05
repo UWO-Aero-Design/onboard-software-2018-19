@@ -36,7 +36,6 @@ void Groundstation::initSystem()
   digitalWrite(radio::RFM95_RST, HIGH);
 
   //Init serial
-  while (!Serial);
   Serial.begin(9600);
   delay(100);
 
