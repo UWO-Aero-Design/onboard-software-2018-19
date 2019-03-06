@@ -16,8 +16,9 @@
 #define CAL_IMU 1
 #define CAL_GPS 2
 #define CAL_BARO 3
-#define PAYLOAD_DROP 1
+#define PAYLOAD_DROP_WATER 1
 #define GLIDER_DROP 2
+#define PAYLOAD_DROP_HABITAT 3
 
 // Only build factory on startup
 OnboardSystem::OnboardSystem()
@@ -274,13 +275,23 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
         gliderDropTime = millis();
       }break;
 
-      case PAYLOAD_DROP:
+      case PAYLOAD_DROP_HABITAT:
       {
-        Serial.println("Payload Drop");
+        Serial.println("Payload Drop - Habitat");
         sendPDrop = true;
         outgoing_packet.pDropLat = gps->getLat()*1000000;
         outgoing_packet.pDropLon = gps->getLon()*1000000;
-        //sb->runServo(9, 0);
+        sb->runServo(PAYLOADPIN::FOOTBALL1, SERVOOPENPOS[1]);
+        sb->runServo(PAYLOADPIN::FOOTBALL2, SERVOOPENPOS[2]);
+      }break;
+
+      case PAYLOAD_DROP_WATER:
+      {
+        Serial.println("Payload Drop - Water");
+        sendPDrop = true;
+        outgoing_packet.pDropLat = gps->getLat()*1000000;
+        outgoing_packet.pDropLon = gps->getLon()*1000000;
+        sb->runServo(PAYLOADPIN::WATER, SERVOOPENPOS[3]);
       }break;
 
       default:
@@ -293,38 +304,38 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
     // motor request
     // Servo 1 - open
     if(packet->motor1 == 1) {
-      sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOOPENPOS[0]);
+      sb->runServo(PAYLOADPIN::PAYLOADDOOR, SERVOOPENPOS[0]);
     }
     // Servo 1 - close
     else if(packet->motor1 == 2) {
-      sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOCLOSEPOS[0]);
+      sb->runServo(PAYLOADPIN::PAYLOADDOOR, SERVOCLOSEPOS[0]);
     }
     
     // Servo 2 - open
     if(packet->motor2 == 1) {
-      sb->runServo(SERVOPIN::PAYLOAD1, SERVOOPENPOS[1]);
+      sb->runServo(PAYLOADPIN::FOOTBALL1, SERVOOPENPOS[1]);
     }
     // Servo 2 - close
     else if(packet->motor2 == 2) {
-      sb->runServo(SERVOPIN::PAYLOAD1, SERVOCLOSEPOS[1]);
+      sb->runServo(PAYLOADPIN::FOOTBALL1, SERVOCLOSEPOS[1]);
     }
 
     // Servo 3 - open
     if(packet->motor3 == 1) {
-      sb->runServo(SERVOPIN::PAYLOAD2, SERVOOPENPOS[2]);
+      sb->runServo(PAYLOADPIN::FOOTBALL2, SERVOOPENPOS[2]);
     }
     // Servo 3 - close
     else if(packet->motor3 == 2) {
-      sb->runServo(SERVOPIN::PAYLOAD2, SERVOCLOSEPOS[2]);
+      sb->runServo(PAYLOADPIN::FOOTBALL2, SERVOCLOSEPOS[2]);
     }
 
     // Servo 4 - open
     if(packet->motor4 == 1) {
-      sb->runServo(SERVOPIN::PAYLOAD3, SERVOOPENPOS[3]);
+      sb->runServo(PAYLOADPIN::WATER, SERVOOPENPOS[3]);
     }
     // Servo 4 - close
     else if(packet->motor4 == 2) {
-      sb->runServo(SERVOPIN::PAYLOAD3, SERVOCLOSEPOS[3]);
+      sb->runServo(PAYLOADPIN::WATER, SERVOCLOSEPOS[3]);
     }
   }
   else
@@ -451,11 +462,11 @@ void OnboardSystem::printPacket()
 
 // motor/servo functions
 bool OnboardSystem::openDoors() {
-  sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOOPENPOS[0]);
+  sb->runServo(PAYLOADPIN::PAYLOADDOOR, SERVOOPENPOS[0]);
   return sb->isError();
 }
 
 bool OnboardSystem::closeDoors() {
-  sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOCLOSEPOS[0]);
+  sb->runServo(PAYLOADPIN::PAYLOADDOOR, SERVOCLOSEPOS[0]);
   return sb->isError();
 }

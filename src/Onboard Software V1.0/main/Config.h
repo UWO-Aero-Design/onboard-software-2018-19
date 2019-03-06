@@ -9,15 +9,18 @@
 #include "Arduino.h"
 #include "Macros.h"
 
-// time for the glider drop motors to run
-const int GLIDERMOTORDROPTIME = 5000;
+// time for the glider drop motors to run (ms)
+const uint8_t GLIDERMOTORDROPTIME = 5000;
 
+// pinouts
 enum LEDPIN{BLUE_LED = 27, GREEN_LED, YELLOW_LED, RED_LED};
 enum MOTORPIN{MOTOR1 = 12, MOTOR2};
-enum SERVOPIN{PAYLOADDOOR = 8, PAYLOAD1, PAYLOAD2, PAYLOAD3};
+enum PAYLOADPIN{PAYLOADDOOR = 8, FOOTBALL1, FOOTBALL2, WATER};
 
-const int SERVOOPENPOS[] = {440, 440, 440, 440};
-const int SERVOCLOSEPOS[] = {180, 180, 180, 180};
+// open and close servo positions
+// (PAYLOADDOOR, FOOTBALL1, FOOTBALL2, WATER)
+const uint8_t SERVOOPENPOS[] = {440, 440, 440, 440};
+const uint8_t SERVOCLOSEPOS[] = {180, 180, 180, 180};
 
 namespace radio
 {
