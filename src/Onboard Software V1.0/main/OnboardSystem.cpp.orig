@@ -237,7 +237,6 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
 
       case CAL_GPS:
       {
-        ALT_OFFSET = gps->getAlt();
         // CALIBRATE GPS LOGIC
         Serial.println("Calibrating GPS...");
       }break;
@@ -290,42 +289,76 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
       }break;
     }
 
-
+<<<<<<< Updated upstream
     // motor request
-    // Servo 1 - open
+    // Servo 1
+=======
+    // motor request handling
+    // motor 1
+>>>>>>> Stashed changes
     if(packet->motor1 == 1) {
       sb->runServo(SERVOPIN::SERVO1, SERVOOPENPOS[0]);
     }
-    // Servo 1 - close
+    // Servo 1
     else if(packet->motor1 == 2) {
       sb->runServo(SERVOPIN::SERVO1, SERVOCLOSEPOS[0]);
     }
-    
-    // Servo 2 - open
+<<<<<<< Updated upstream
+    // Servo 2
+=======
+
+    // motor 2
+>>>>>>> Stashed changes
     if(packet->motor2 == 1) {
       sb->runServo(SERVOPIN::SERVO2, SERVOOPENPOS[1]);
     }
-    // Servo 2 - close
+    // Servo 2
     else if(packet->motor2 == 2) {
       sb->runServo(SERVOPIN::SERVO2, SERVOCLOSEPOS[1]);
     }
+<<<<<<< Updated upstream
+    // Servo 3
+=======
 
-    // Servo 3 - open
+    // motor 3
+>>>>>>> Stashed changes
     if(packet->motor3 == 1) {
       sb->runServo(SERVOPIN::SERVO3, SERVOOPENPOS[2]);
     }
-    // Servo 3 - close
+    // Servo 3
     else if(packet->motor3 == 2) {
       sb->runServo(SERVOPIN::SERVO3, SERVOCLOSEPOS[2]);
     }
+<<<<<<< Updated upstream
+    // Servo 4
+=======
 
-    // Servo 4 - open
+    // motor 4
+>>>>>>> Stashed changes
     if(packet->motor4 == 1) {
       sb->runServo(SERVOPIN::SERVO4, SERVOOPENPOS[3]);
     }
-    // Servo 4 - close
+    // Servo 4
     else if(packet->motor4 == 2) {
+<<<<<<< Updated upstream
+      sb->runServo(8, 440);
+    }
+    // DC Motor1
+    if(packet->motor5 == 1) {
+      sb->runServo(8, 440);
+    }
+    // DC Motor1
+    else if(packet->motor5 == 2) {
+      sb->runServo(8, 440);
+    }
+    if(packet->motor6 == 1) {
+      sb->runServo(8, 440);
+    }
+    else if(packet->motor6 == 2) {
+      sb->runServo(8, 440);
+=======
       sb->runServo(SERVOPIN::SERVO4, SERVOCLOSEPOS[3]);
+>>>>>>> Stashed changes
     }
   }
   else
@@ -399,7 +432,7 @@ void OnboardSystem::generateRealPacket()
 
  // Send back speed, altitude
  outgoing_packet.speed = gps->getSpeed();
- outgoing_packet.alt = gps->getAlt() - ALT_OFFSET;
+ outgoing_packet.alt = gps->getAlt();
 
  // Send back RSSI
  outgoing_packet.rssi = rf95->lastRssi();

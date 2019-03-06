@@ -70,6 +70,9 @@ private:
 
   // DC motor start
   unsigned long gliderDropTime = 0;
+
+  // zero point for altitude
+  double ALT_OFFSET = 0;
 	
 protected:
 public:

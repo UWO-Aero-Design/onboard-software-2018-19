@@ -11,6 +11,10 @@
 
 enum LEDPIN{BLUE_LED = 27, GREEN_LED, YELLOW_LED, RED_LED};
 
+enum SERVOPIN{SERVO1 = 1, SERVO2, SERVO3, SERVO4};
+const int SERVOOPENPOS[] = {440, 440, 440, 440};
+const int SERVOCLOSEPOS[] = {180, 180, 180, 180};
+
 namespace radio
 {
     const uint8_t RFM95_CS  	  = 10;
