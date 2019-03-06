@@ -182,70 +182,99 @@ void Groundstation::updateSystem()
       uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
       uint8_t len = sizeof(buf);
 
-      Serial.println("Waiting for reply..."); delay(10);
-      if (rf95->waitAvailableTimeout(1000))
-      { 
-          // Should be a reply message for us now   
-          if (rf95->recv(buf, &len))
-          {
-              Serial.print("Got reply: ");
-              printPlaneBuffer((char *)buf);
-              ledRadio->turnOff();
+      msg::ground_to_board_msg_t* bluetooth_packet = (msg::ground_to_board_msg_t *) _buffer;
+      if(bluetooth_packet->msgType == 1)
+      {
+        Serial.println("Waiting for reply..."); delay(10);
+        if (rf95->waitAvailableTimeout(1000))
+        { 
+            // Should be a reply message for us now   
+            if (rf95->recv(buf, &len))
+            {
+                Serial.print("Got reply: ");
+                printPlaneBuffer((char *)buf);
+                ledRadio->turnOff();
 
-              msg::board_to_ground_msg_t* incoming_packet = (msg::board_to_ground_msg_t *) buf;
-              Serial.println(incoming_packet->lat);
+                msg::board_to_ground_msg_t* incoming_packet = (msg::board_to_ground_msg_t *) buf;
+                Serial.println(incoming_packet->lat);
 
-              // Send response to tablet over bluetooth
-              for(int i = 0; i < sizeof(msg::board_to_ground_msg_t); ++i)
-              {
-                Serial4.write((char)buf[i]);
-              }
+                // Send response to tablet over bluetooth
+                for(int i = 0; i < sizeof(msg::board_to_ground_msg_t); ++i)
+                {
+                  Serial4.write((char)buf[i]);
+                }
 
-              // Print buf byte by byte
-              Serial.println("Printing sent data ...");
-              printPlaneBuffer((char*)buf);
+                // Print buf byte by byte
+                Serial.println("Printing sent data ...");
+                printPlaneBuffer((char*)buf);
 
 
-              // Print buf byte by byte
-              Serial.println("BUFFER PRE-RESET");
-              printPlaneBuffer((char*)_buffer);
+                // Print buf byte by byte
+                Serial.println("BUFFER PRE-RESET");
+                printPlaneBuffer((char*)_buffer);
 
-              msg::ground_to_board_msg_t* bluetooth_packet = (msg::ground_to_board_msg_t *) _buffer;
-              bluetooth_packet->calibrate = 0;
-              bluetooth_packet->rssi = 0;
-              bluetooth_packet->dropRequest = 0;
-              bluetooth_packet->motor1 = 0;
-              bluetooth_packet->motor2 = 0;
-              bluetooth_packet->motor3 = 0;
-              bluetooth_packet->motor4 = 0;
-              bluetooth_packet->motor5 = 0;
-              bluetooth_packet->motor6 = 0;
-              bluetooth_packet->motor7 = 0;
-              bluetooth_packet->motor8 = 0;
-              bluetooth_packet->motor9 = 0;
-              bluetooth_packet->motor10 = 0;
-              bluetooth_packet->motor11 = 0;
-              bluetooth_packet->motor12 = 0;
-              bluetooth_packet->motor13 = 0;
-              bluetooth_packet->motor14 = 0;
-              bluetooth_packet->motor15 = 0;
-              bluetooth_packet->motor16 = 0;
-              bluetooth_packet->error = 0;               
+                msg::ground_to_board_msg_t* bluetooth_packet = (msg::ground_to_board_msg_t *) _buffer;
+                bluetooth_packet->calibrate = 0;
+                bluetooth_packet->rssi = 0;
+                bluetooth_packet->dropRequest = 0;
+                bluetooth_packet->motor1 = 0;
+                bluetooth_packet->motor2 = 0;
+                bluetooth_packet->motor3 = 0;
+                bluetooth_packet->motor4 = 0;
+                bluetooth_packet->motor5 = 0;
+                bluetooth_packet->motor6 = 0;
+                bluetooth_packet->motor7 = 0;
+                bluetooth_packet->motor8 = 0;
+                bluetooth_packet->motor9 = 0;
+                bluetooth_packet->motor10 = 0;
+                bluetooth_packet->motor11 = 0;
+                bluetooth_packet->motor12 = 0;
+                bluetooth_packet->motor13 = 0;
+                bluetooth_packet->motor14 = 0;
+                bluetooth_packet->motor15 = 0;
+                bluetooth_packet->motor16 = 0;
+                bluetooth_packet->error = 0;               
 
-              // Print buf byte by byte
-              Serial.println("BUFFER POST-RESET");
-              printPlaneBuffer((char*)_buffer);
+                // Print buf byte by byte
+                Serial.println("BUFFER POST-RESET");
+                printPlaneBuffer((char*)_buffer);
 
-              ledBluetooth->turnOff();
-          }
-          else
-          {
-              Serial.println("Receive failed");
-          }
+                ledBluetooth->turnOff();
+            }
+            else
+            {
+                Serial.println("Receive failed");
+            }
+        }
+        else
+        {
+            Serial.println("No reply, is there a listener around?");
+        }
       }
       else
       {
-          Serial.println("No reply, is there a listener around?");
+        Serial.println("Skipping glider message");
+        bluetooth_packet->msgType = 1;  // Set to 256 cause glider swaps it
+        bluetooth_packet->calibrate = 0;
+        bluetooth_packet->rssi = 0;
+        bluetooth_packet->dropRequest = 0;
+        bluetooth_packet->motor1 = 0;
+        bluetooth_packet->motor2 = 0;
+        bluetooth_packet->motor3 = 0;
+        bluetooth_packet->motor4 = 0;
+        bluetooth_packet->motor5 = 0;
+        bluetooth_packet->motor6 = 0;
+        bluetooth_packet->motor7 = 0;
+        bluetooth_packet->motor8 = 0;
+        bluetooth_packet->motor9 = 0;
+        bluetooth_packet->motor10 = 0;
+        bluetooth_packet->motor11 = 0;
+        bluetooth_packet->motor12 = 0;
+        bluetooth_packet->motor13 = 0;
+        bluetooth_packet->motor14 = 0;
+        bluetooth_packet->motor15 = 0;
+        bluetooth_packet->motor16 = 0;
+        bluetooth_packet->error = 0; 
       }
 
       // Delay system after a radio message was sent to keep update rate at 0.5
