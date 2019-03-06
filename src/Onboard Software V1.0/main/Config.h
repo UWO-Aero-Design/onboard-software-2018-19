@@ -9,9 +9,13 @@
 #include "Arduino.h"
 #include "Macros.h"
 
-enum LEDPIN{BLUE_LED = 27, GREEN_LED, YELLOW_LED, RED_LED};
+// time for the glider drop motors to run
+const int GLIDERMOTORDROPTIME = 5000;
 
-enum SERVOPIN{SERVO1 = 1, SERVO2, SERVO3, SERVO4};
+enum LEDPIN{BLUE_LED = 27, GREEN_LED, YELLOW_LED, RED_LED};
+enum MOTORPIN{MOTOR1 = 12, MOTOR2};
+enum SERVOPIN{PAYLOADDOOR = 8, PAYLOAD1, PAYLOAD2, PAYLOAD3};
+
 const int SERVOOPENPOS[] = {440, 440, 440, 440};
 const int SERVOCLOSEPOS[] = {180, 180, 180, 180};
 

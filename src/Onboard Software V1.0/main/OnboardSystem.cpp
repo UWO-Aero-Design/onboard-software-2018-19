@@ -180,10 +180,13 @@ void OnboardSystem::updateSystem()
     }
   }
 
-  if((gliderDropTime != 0) && (millis() - gliderDropTime > 5000))
+  if((gliderDropTime != 0) && (millis() - gliderDropTime > GLIDERMOTORDROPTIME))
   {
-    Serial.println("Glider dropping has been running for 5 seconds...");
-    sb->glider_stop(12);
+    Serial.print("Glider dropping has been running for ");
+    Serial.print(GLIDERMOTORDROPTIME);
+    Serial.println(" seconds...");
+    sb->gpio_stop(MOTORPIN::MOTOR1);
+    sb->gpio_stop(MOTORPIN::MOTOR2);
     gliderDropTime = 0;
   }
   
@@ -266,10 +269,9 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
         sendGDrop = true;
         outgoing_packet.gDropLat = gps->getLat()*1000000;
         outgoing_packet.gDropLon = gps->getLon()*1000000;
-        dropGlider();
-        // GLIDER DROP LOGIC with motor controller
-        //gliderDropLat = gps.getLat();
-        //gliderDropLon = gps.getLon();
+        sb->gpio_start(MOTORPIN::MOTOR1); 
+        sb->gpio_start(MOTORPIN::MOTOR2);   
+        gliderDropTime = millis();
       }break;
 
       case PAYLOAD_DROP:
@@ -278,10 +280,7 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
         sendPDrop = true;
         outgoing_packet.pDropLat = gps->getLat()*1000000;
         outgoing_packet.pDropLon = gps->getLon()*1000000;
-        closeDoors();
-        // PAYLOAD DROP LOGIC with motor controller
-        //payloadDropLat = gps.getLat();
-        //payloadDropLon = gps.getLon();
+        //sb->runServo(9, 0);
       }break;
 
       default:
@@ -294,38 +293,38 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
     // motor request
     // Servo 1 - open
     if(packet->motor1 == 1) {
-      sb->runServo(SERVOPIN::SERVO1, SERVOOPENPOS[0]);
+      sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOOPENPOS[0]);
     }
     // Servo 1 - close
     else if(packet->motor1 == 2) {
-      sb->runServo(SERVOPIN::SERVO1, SERVOCLOSEPOS[0]);
+      sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOCLOSEPOS[0]);
     }
     
     // Servo 2 - open
     if(packet->motor2 == 1) {
-      sb->runServo(SERVOPIN::SERVO2, SERVOOPENPOS[1]);
+      sb->runServo(SERVOPIN::PAYLOAD1, SERVOOPENPOS[1]);
     }
     // Servo 2 - close
     else if(packet->motor2 == 2) {
-      sb->runServo(SERVOPIN::SERVO2, SERVOCLOSEPOS[1]);
+      sb->runServo(SERVOPIN::PAYLOAD1, SERVOCLOSEPOS[1]);
     }
 
     // Servo 3 - open
     if(packet->motor3 == 1) {
-      sb->runServo(SERVOPIN::SERVO3, SERVOOPENPOS[2]);
+      sb->runServo(SERVOPIN::PAYLOAD2, SERVOOPENPOS[2]);
     }
     // Servo 3 - close
     else if(packet->motor3 == 2) {
-      sb->runServo(SERVOPIN::SERVO3, SERVOCLOSEPOS[2]);
+      sb->runServo(SERVOPIN::PAYLOAD2, SERVOCLOSEPOS[2]);
     }
 
     // Servo 4 - open
     if(packet->motor4 == 1) {
-      sb->runServo(SERVOPIN::SERVO4, SERVOOPENPOS[3]);
+      sb->runServo(SERVOPIN::PAYLOAD3, SERVOOPENPOS[3]);
     }
     // Servo 4 - close
     else if(packet->motor4 == 2) {
-      sb->runServo(SERVOPIN::SERVO4, SERVOCLOSEPOS[3]);
+      sb->runServo(SERVOPIN::PAYLOAD3, SERVOCLOSEPOS[3]);
     }
   }
   else
@@ -398,8 +397,8 @@ void OnboardSystem::generateRealPacket()
  outgoing_packet.roll = imu->getRoll() * 100;
 
  // Send back speed, altitude
- outgoing_packet.speed = gps->getSpeed();
- outgoing_packet.alt = gps->getAlt() - ALT_OFFSET;
+ outgoing_packet.speed = gps->getSpeed() * 100;
+ outgoing_packet.alt = (gps->getAlt() - ALT_OFFSET) * 10;
 
  // Send back RSSI
  outgoing_packet.rssi = rf95->lastRssi();
@@ -452,22 +451,11 @@ void OnboardSystem::printPacket()
 
 // motor/servo functions
 bool OnboardSystem::openDoors() {
-  sb->runServo(8, 440);
+  sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOOPENPOS[0]);
   return sb->isError();
 }
 
 bool OnboardSystem::closeDoors() {
-  sb->runServo(8, 180);
-  return sb->isError();
-}
-
-bool OnboardSystem::dropPayload() {
-  sb->runServo(9, 0);
-  return sb->isError();
-}
-
-bool OnboardSystem::dropGlider() {
-  sb->glider_actuate(12);   
-  gliderDropTime = millis();
+  sb->runServo(SERVOPIN::PAYLOADDOOR, SERVOCLOSEPOS[0]);
   return sb->isError();
 }

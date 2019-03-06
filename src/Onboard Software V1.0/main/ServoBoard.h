@@ -30,8 +30,8 @@ class ServoBoard {
     // main servo running method
     void runServo(int channel, int pulse);
 
-    void glider_actuate(int channel);
-    void glider_stop(int channel);
+    void gpio_start(int channel);
+    void gpio_stop(int channel);
 
     // error handling
     bool isError();

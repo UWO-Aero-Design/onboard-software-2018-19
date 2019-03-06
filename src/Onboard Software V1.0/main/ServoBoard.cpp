@@ -55,21 +55,21 @@ String ServoBoard::getErrorMsg() {
   return errorMsg;
 }
 
-void ServoBoard::glider_actuate(int channel){
+void ServoBoard::gpio_start(int channel){
   if(channel > maxChannel || channel < minChannel) {
     error = true;
     errorMsg = "Invalid Channel";
     return;
   }
-  driver.setPWM(channel, 4096,   0 );
+  driver.setPWM(channel, 4096, 0);
 }
 
-void ServoBoard::glider_stop(int channel)
+void ServoBoard::gpio_stop(int channel)
 {
    if(channel > maxChannel || channel < minChannel) {
     error = true;
     errorMsg = "Invalid Channel";
     return;
   }
-  driver.setPWM(channel, 0,   4096 ); 
+  driver.setPWM(channel, 0, 4096); 
 }
