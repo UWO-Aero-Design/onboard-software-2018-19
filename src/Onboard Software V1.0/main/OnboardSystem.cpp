@@ -184,6 +184,13 @@ void OnboardSystem::updateSystem()
     }
   }
 
+  if((gliderDropTime != 0) && (millis() - gliderDropTime > 5000))
+  {
+    Serial.println("Glider dropping has been running for 5 seconds...");
+    sb->glider_stop(12);
+    gliderDropTime = 0;
+  }
+  
   ledLoop->turnOn();
 	delay(100);
   ledLoop->turnOff();
@@ -262,7 +269,7 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
         sendGDrop = true;
         outgoing_packet.gDropLat = gps->getLat()*1000000;
         outgoing_packet.gDropLon = gps->getLon()*1000000;
-        openDoors();
+        dropGlider();
         // GLIDER DROP LOGIC with motor controller
         //gliderDropLat = gps.getLat();
         //gliderDropLon = gps.getLon();
@@ -287,33 +294,43 @@ uint8_t OnboardSystem::processIncomingPacket(msg::ground_to_board_msg_t* packet)
     }
 
     // motor request
+    // Servo 1
     if(packet->motor1 == 1) {
       sb->runServo(8, 440);
     }
+    // Servo 1
     else if(packet->motor1 == 2) {
       sb->runServo(8, 440);
     }
+    // Servo 2
     if(packet->motor2 == 1) {
       sb->runServo(8, 440);
     }
+    // Servo 2
     else if(packet->motor2 == 2) {
       sb->runServo(8, 440);
     }
+    // Servo 3
     if(packet->motor3 == 1) {
       sb->runServo(8, 440);
     }
+    // Servo 3
     else if(packet->motor3 == 2) {
       sb->runServo(8, 440);
     }
+    // Servo 4
     if(packet->motor4 == 1) {
       sb->runServo(8, 440);
     }
+    // Servo 4
     else if(packet->motor4 == 2) {
       sb->runServo(8, 440);
     }
+    // DC Motor1
     if(packet->motor5 == 1) {
       sb->runServo(8, 440);
     }
+    // DC Motor1
     else if(packet->motor5 == 2) {
       sb->runServo(8, 440);
     }
@@ -463,6 +480,7 @@ bool OnboardSystem::dropPayload() {
 }
 
 bool OnboardSystem::dropGlider() {
-  sb->runServo(9, 180);
+  sb->glider_actuate(12);   
+  gliderDropTime = millis();
   return sb->isError();
 }

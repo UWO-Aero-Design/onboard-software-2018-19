@@ -67,6 +67,9 @@ private:
   bool closeDoors();
   bool dropPayload();
   bool dropGlider();
+
+  // DC motor start
+  unsigned long gliderDropTime = 0;
 	
 protected:
 public:
